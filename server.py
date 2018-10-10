@@ -12,6 +12,47 @@ def index():
     return render_template('homepage.html')
 
 
+@app.route('/login', methods=['GET'])
+def login_form():
+    """Show login form."""
+    return render_template("login.html")
+
+@app.route('/login', methods=['POST'])
+
+def login_process():
+
+    """Process login."""
+     # Get form variables
+
+    email = request.form["email"]
+
+    password = request.form["password"]
+
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+
+        flash("No such user")
+
+        return redirect("/login")
+
+    if user.password != password:
+
+        flash("Incorrect password")
+
+        return redirect("/login")
+
+    session["user_id"] = user.user_id
+
+
+    flash("You are now logged in")
+
+    return redirect("/profiles/{}".format(user.user_id))
+
+                     ### NEW USER ###
+
+
 @app.route('/signUp', methods=['GET'])
 def signup_form():
     """user signup form"""
@@ -39,11 +80,11 @@ def signup_process():
     session['user_id'] = new_user.user_id
     session['fname'] = new_user.fname
 
-    return redirect('/settings')
+    #return redirect('/settings')
 
 
                                     #Profile Upload#
-@app.route('/add_profile_img', methods=['GET', 'POST'])
+@app.route('/profile_img', methods=['GET', 'POST'])
 def upload():
 
     user_id = session.get('user_id')
@@ -54,8 +95,8 @@ def upload():
         user = User.query.get(user_id)
         user.photo = '/' + app.config['UPLOADED_PHOTOS_DEST'] + '/' + path
         db.session.commit()
-
-
+@app.route('/search')
+def
 if __name__ == '__main__':
     # error messages and reload
     # our web app if we change the code.
