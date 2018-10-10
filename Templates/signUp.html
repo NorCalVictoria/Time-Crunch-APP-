@@ -10,6 +10,12 @@
 
     
     <br>
+    <div class='d-inline'>
+      <label>
+        <h6>Upload Profile Photo</h6>
+        <input type="file" name="photo" accept="image/*">
+      </label>
+    </div>
     
   <div>  
     <div class='d-inline'>
@@ -51,4 +57,30 @@
   </form>
 </div>
 
+     <!-- code to upload profile image below -->
+
+  <!--    <html>
+<head>
+    <title>Upload</title>
+</head>
+<body>
+    <div class='container'>
+        <div id='photo-container'>
+            <div class="page-header">
+                <h3>Your profile pic</h3>
+            </div>
+            <br>
+            <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+                <input type='file' name='photo'> <<<<<<<<<
+                <input type="submit" class='btn btn-primary' value="Submit">
+
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+ -->
 {% endblock %}
+
+
+

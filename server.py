@@ -1,14 +1,16 @@
 """Greeting Flask app."""
 
 from random import choice
+from flask import render_template
+from flask import Flask, request, redirect
 
-from flask import Flask, request
+app = Flask(__name__)
 
 
                         #Routing#
 @app.route('/')
 def index():
-    """homepage"""
+    """Homepage"""
     return render_template('homepage.html')
 
 
@@ -35,23 +37,34 @@ def login_process():
 
         flash("No such user")
 
-        return redirect("/login")
+    return redirect("/login")
 
     if user.password != password:
 
         flash("Incorrect password")
 
-        return redirect("/login")
+    return redirect("/login")
 
     session["user_id"] = user.user_id
 
 
     flash("You are now logged in")
 
-    return redirect("/profiles/{}".format(user.user_id))
+    return redirect("/search/{}".format(user.user_id))
 
-                     ### NEW USER ###
 
+@app.route('/logoff')
+def logout():
+    """Log out."""
+
+    del session['user_id']
+    flash('You have logged out')
+
+    return redirect('/')
+
+
+
+                      ### NEW USER ###
 
 @app.route('/signUp', methods=['GET'])
 def signup_form():
@@ -60,7 +73,7 @@ def signup_form():
     return render_template('signUp.html')
 
 
-@app.route('/signUp', methods=['POST'])
+@app.route('/signUp', methods=['POST']) 
 def signup_process():
     """Process signup"""
 
@@ -69,7 +82,8 @@ def signup_process():
     lname = request.form['lname']
     email = request.form["email"]
     password = request.form["password"]
-
+    
+    
 
     new_user = User(fname=fname, lname=lname, password=password)
 
@@ -95,8 +109,19 @@ def upload():
         user = User.query.get(user_id)
         user.photo = '/' + app.config['UPLOADED_PHOTOS_DEST'] + '/' + path
         db.session.commit()
-@app.route('/search')
-def
+
+
+# @app.route('/search')
+# def
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     # error messages and reload
     # our web app if we change the code.

@@ -1,7 +1,7 @@
 """time crunch database model for app"""
 
 from flask import Flask
-
+from db_setup import init_db, db_session
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -26,6 +26,7 @@ class User(db.Model):
    #pets = db.Column(db.String(5), nullable=True)
    #kids = db.Column(db.String(5), nullable=True)
     hobbies = db.Column(db.String(20),nullable=False)
+    photo = db.Column(db.String(128), nullable=True)
 
     hobbies = db.relationship('Hobby')
 
@@ -63,11 +64,12 @@ class User_Hobby(db.Model):
 #-----------------------------------------------------------------------#
 # Helper functions
 
-def connect_to_db(app):
+def connect_to_db(app, db.uri='postgresql:///timeCrunch'):
     """Connect the database."""
 
     # Configure the PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI']  ('postgresql:///timeCrunch'
+    app.config['SQLALCHEMY_DATABASE_URI']  
+    app.config['SQLALCHEMY_ECHO'] = True   
     db.app = app
     db.init_app(app)
 
