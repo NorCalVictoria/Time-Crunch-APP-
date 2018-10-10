@@ -5,11 +5,7 @@ from random import choice
 from flask import Flask, request
 
 
-
-
-
-
-                                    #Routing#
+                        #Routing#
 @app.route('/')
 def index():
     """homepage"""
@@ -32,8 +28,8 @@ def signup_process():
     lname = request.form['lname']
     email = request.form["email"]
     password = request.form["password"]
-    
-    
+
+
     new_user = User(fname=fname, lname=lname, password=password)
 
                                    #add_new_user#
@@ -43,10 +39,10 @@ def signup_process():
     session['user_id'] = new_user.user_id
     session['fname'] = new_user.fname
 
-    return redirect('/settings')   
+    return redirect('/settings')
 
 
-                                    #Profile Upload# 
+                                    #Profile Upload#
 @app.route('/add_profile_img', methods=['GET', 'POST'])
 def upload():
 
@@ -58,8 +54,7 @@ def upload():
         user = User.query.get(user_id)
         user.photo = '/' + app.config['UPLOADED_PHOTOS_DEST'] + '/' + path
         db.session.commit()
-        
-    
+
 
 if __name__ == '__main__':
     # error messages and reload
