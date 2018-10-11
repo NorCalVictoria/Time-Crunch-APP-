@@ -11,7 +11,7 @@ db = SQLAlchemy()
 
 
 #----------------------------------------------------------------------#
-# defs for model
+                             # defs for model #
 
 class User(db.Model):
     """User of time crunch web app."""
@@ -23,12 +23,20 @@ class User(db.Model):
     password = db.Column(db.String(20), nullable=True)
     fname = db.Column(db.String(20), nullable=True)
     lname = db.Column(db.String(20), nullable=True)
-   #pets = db.Column(db.String(5), nullable=True)
-   #kids = db.Column(db.String(5), nullable=True)
+    pets = db.Column(db.Boolean, nullable=True)
+    kids = db.Column(db.Boolean, nullable=True)
     hobbies = db.Column(db.String(20),nullable=False)
     photo = db.Column(db.String(128), nullable=True)
+    foodie = db.Column(db.Boolean, nullable=True)
+    museums = db.Column(db.Boolean, nullable=True)
+    landmarks = db.Column(db.Boolean, nullable=True)
+    dancing = db.Column(db.Boolean, nullable=True)
+    escape_rooms = db.Column(db.Boolean, nullable=True)
+    wine_bar = db.Column(db.Boolean, nullable=True)
+    historic = db.Column(db.Boolean, nullable=True)
+    scenic = db.Column(db.Boolean, nullable=True)
 
-    hobbies = db.relationship('Hobby')
+        users = db.relationship('User')  relationship
 
     def __repr__(self):
         """helpful representation"""

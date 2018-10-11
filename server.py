@@ -3,7 +3,7 @@
 from random import choice
 from flask import render_template , flash
 from flask import Flask, request, redirect
-
+import jinja2
 
 #from model import connect_to_db, db
 
@@ -90,7 +90,6 @@ def signup_process():
     password = request.form["password"]
     
     
-
     new_user = User(fname=fname, lname=lname, password=password, email=email)
 
                                    #add_new_user#
@@ -104,21 +103,21 @@ def signup_process():
 
 
                                     #Profile Upload#
-@app.route('/profile_img', methods=['GET', 'POST'])
-def upload():
+# @app.route('/profile_img', methods=['GET', 'POST'])
+# def upload():
 
-    user_id = session.get('user_id')
-    path = str(user_id) + ".jpg"
-    if request.method == 'POST' and 'photo' in request.files:
-        request.files['photo'].filename = path
-        filename = photos.save(request.files['photo'])
-        user = User.query.get(user_id)
-        user.photo = '/' + app.config['UPLOADED_PHOTOS_DEST'] + '/' + path
-        db.session.commit()
+#     user_id = session.get('user_id')
+#     path = str(user_id) + ".jpg"
+#     if request.method == 'POST' and 'photo' in request.files:
+#         request.files['photo'].filename = path
+#         filename = photos.save(request.files['photo'])
+#         user = User.query.get(user_id)
+#         user.photo = '/' + app.config['UPLOADED_PHOTOS_DEST'] + '/' + path
+#         db.session.commit()
 
 
-# @app.route('/search')
-# def
+# # @app.route('/search')
+# # def
 
 
 
