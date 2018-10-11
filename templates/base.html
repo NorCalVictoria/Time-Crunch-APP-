@@ -1,7 +1,12 @@
+
+
+
+
+
 <!doctype html>
 <html>
 <head>
-    <title></title>
+    <title>{% block title %}{% endblock %}</title>
     <script ></script>
 
      
@@ -10,11 +15,13 @@
 
 <body>
 <!-- add content block-->
- 
+ {% block content %}
 
   <!--Put your body here-->
 
 
+
+{% endblock %}
    
   <script ></script>
   <script ></script>

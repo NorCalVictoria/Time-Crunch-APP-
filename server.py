@@ -91,7 +91,7 @@ def signup_process():
     
     
 
-    new_user = User(fname=fname, lname=lname, password=password)
+    new_user = User(fname=fname, lname=lname, password=password, email=email)
 
                                    #add_new_user#
     db.session.add(new_user)
