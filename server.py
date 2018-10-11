@@ -1,8 +1,14 @@
 """Greeting Flask app."""
 
 from random import choice
-from flask import render_template
+from flask import render_template , flash
 from flask import Flask, request, redirect
+
+
+#from model import connect_to_db, db
+
+
+
 
 app = Flask(__name__)
 
