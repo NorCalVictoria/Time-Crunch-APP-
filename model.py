@@ -26,7 +26,7 @@ class User(db.Model):
 
 
 
-    hobbies = db.relationship('Hobby',secondary='user_hobbies')
+    hobbies = db.relationship('Hobby',secondary='user_hobbies',backref='users')
 
     def __repr__(self):
         """helpful representation""" 
