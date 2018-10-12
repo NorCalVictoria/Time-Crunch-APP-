@@ -6,7 +6,7 @@
 <div class='container'>
   <h3>You must sign up to use application</h3>
   
-  <form action="signUp" method="POST">
+  <form action="/signUp" method="POST">
 
     
     <br>
@@ -54,32 +54,20 @@
       <input type="submit" class='btn btn-primary' value="Submit">
     </div>
 
+    {# this is a comment 
+    <!-- <div>
+
+      <input type='file' name='photo'> 
+
+    </div> -->
+    #}
+
   </form>
 </div>
 
      <!-- code to upload profile image below -->
 
-  <!--    <html>
-<head>
-    <title>Upload</title>
-</head>
-<body>
-    <div class='container'>
-        <div id='photo-container'>
-            <div class="page-header">
-                <h3>Your profile pic</h3>
-            </div>
-            <br>
-            <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
-                <input type='file' name='photo'> <<<<<<<<<
-                <input type="submit" class='btn btn-primary' value="Submit">
 
-            </form>
-        </div>
-    </div>
-</body>
-</html>
- -->
 {% endblock %}
 
 

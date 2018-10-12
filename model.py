@@ -1,7 +1,7 @@
 """time crunch database model for app"""
 
 from flask import Flask
-from db_setup import init_db, db_session
+
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -19,27 +19,17 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(20), nullable=True)
-    password = db.Column(db.String(20), nullable=True)
+    email = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(20), nullable=False)
     fname = db.Column(db.String(20), nullable=True)
     lname = db.Column(db.String(20), nullable=True)
-    pets = db.Column(db.Boolean, nullable=True)
-    kids = db.Column(db.Boolean, nullable=True)
-    hobbies = db.Column(db.String(20),nullable=False)
-    photo = db.Column(db.String(128), nullable=True)
-    foodie = db.Column(db.Boolean, nullable=True)
-    museums = db.Column(db.Boolean, nullable=True)
-    landmarks = db.Column(db.Boolean, nullable=True)
-    dancing = db.Column(db.Boolean, nullable=True)
-    escape_rooms = db.Column(db.Boolean, nullable=True)
-    wine_bar = db.Column(db.Boolean, nullable=True)
-    historic = db.Column(db.Boolean, nullable=True)
-    scenic = db.Column(db.Boolean, nullable=True)
 
-        users = db.relationship('User')  relationship
+
+
+    hobbies = db.relationship('Hobby',secondary='user_hobbies')
 
     def __repr__(self):
-        """helpful representation"""
+        """helpful representation""" 
 
         return "<User user_id=%s email=%s>" % (self.user_id, self.email) #MORE FORMATTING NEEDED
 # list of hobbies here.
@@ -48,35 +38,32 @@ class Hobby(db.Model):
     """Hobbies that user chooses from"""
     __tablename__ = "hobbies"
 
-    hobby_id = db.Column(db.Integer, primary_key=True)
-    kid_friendly = db.Column(db.Boolean, nullable=False)
-    pets_friendly = db.Column(db.Boolean, nullable=False)
+    hobby_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(60), nullable=False)
 
-    users = db.relationship('User')
+
 
 class User_Hobby(db.Model):
     """choices user input when signed up"""
     __tablename__ = "user_hobbies"
 
-    user_hobby_id= db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable=False)
-     #another?   = db.Column(db.String, nullable=False)
+    user_hobby_id= db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    hobby_id = db.Column(db.Integer, db.ForeignKey("hobbies.hobby_id"), nullable=False)
 
-    users = db.relationship('User')
 
-    def __repr__(self):
-        """ add doc string """
+    user = db.relationship('User')
+    hobby = db.relationship('Hobby')
 
-        # return "<>" % ()
-
+   
 #-----------------------------------------------------------------------#
 # Helper functions
 
-def connect_to_db(app, db.uri='postgresql:///timeCrunch'):
+def connect_to_db(app, db_uri='postgresql:///timeCrunch'):
     """Connect the database."""
 
     # Configure the PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI']  
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_ECHO'] = True   
     db.app = app
     db.init_app(app)
@@ -86,4 +73,5 @@ if __name__ == "__main__":
 
     from server import app
     connect_to_db(app)
+    db.create_all()
     print ("Connected to DB.")

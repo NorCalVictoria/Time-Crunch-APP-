@@ -1,32 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}
-      GOT HERE
+      login page
 {% endblock %}
 
 
 {% block content %}
+<div id="login">
+  <h1>Log in</h1>
+
+  <form action="/login">        
+    <input type="Username" placeholder="Username" />
+    <input type="password" placeholder="Password" />        
+    <input  type="submit" value="Log in" />    
+  </form>
+</div>
+<br>
 
 <div>
- 
-    <div class="add nice feature block here"> 
-        <img>
-    </div>
-    <br>
-    <div>
-    <div id='about' class='text-center'>
-      <a class='btn btn-link' type='button'href='/signUp!</a> 
-      <br>
-      <div style='margin:3em'>
-          <h6 class='text-justify'>
-            message to traveler block
-            inspirational
-
-      </h6>
-      </div>
-    </div> 
-        <br>
-        <br>
-        <br>
+<a class='btn btn-link' type='button' href='/signUp'>Sign Up Here</a> 
 </div>
 
 {% endblock %}
