@@ -16,7 +16,7 @@ app = Flask(__name__)
                         #Routing#
 @app.route('/')
 def index():
-    """Homepage"""
+    """Homepage"""    #Landing Page ?
 
     return render_template('homepage.html')
 
@@ -84,7 +84,7 @@ def signup_form():
 def signup_process():
     """Process signup"""
 
-                                    #user input#
+                                    ### USER INPUT ###
     fname = request.form['fname']
     lname = request.form['lname']
     email = request.form["email"]
