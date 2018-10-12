@@ -17,6 +17,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     """Homepage"""
+
     return render_template('homepage.html')
 
 
@@ -116,15 +117,8 @@ def signup_process():
 #         db.session.commit()
 
 
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     # error messages and reload
     # our web app if we change the code.
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run(host="0.0.0.0")

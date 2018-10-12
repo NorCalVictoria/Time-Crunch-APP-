@@ -11,7 +11,7 @@ db = SQLAlchemy()
 
 
 #----------------------------------------------------------------------#
-                             # defs for model #
+     # defs for model #
 
 class User(db.Model):
     """User of time crunch web app."""
@@ -32,7 +32,7 @@ class User(db.Model):
         """helpful representation""" 
 
         return "<User user_id=%s email=%s>" % (self.user_id, self.email) #MORE FORMATTING NEEDED
-# list of hobbies here.
+# list of hobbies here #
 
 class Hobby(db.Model):
     """Hobbies that user chooses from"""
@@ -54,12 +54,10 @@ class User_Hobby(db.Model):
 
     user = db.relationship('User')
     hobby = db.relationship('Hobby')
-
-   
 #-----------------------------------------------------------------------#
-# Helper functions
+# Helper functions #
 
-def connect_to_db(app, db_uri='postgresql:///timeCrunch'):
+    def connect_to_db(app, db_uri='postgresql:///timeCrunch'):
     """Connect the database."""
 
     # Configure the PstgreSQL database
