@@ -120,5 +120,5 @@ def signup_process():
 if __name__ == '__main__':
     # error messages and reload
     # our web app if we change the code.
-    #app.run(debug=True)
-    app.run(host="0.0.0.0")
+    app.run(debug=True)
+    #app.run(host="0.0.0.0")
