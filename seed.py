@@ -9,9 +9,9 @@ from server import app
 def random_seed():    
   print('User')
 
-    karen = User(username=‘karenanderson’, password=’123456’, 
+    karen = User(username=‘kare’, password=’123456’, 
 
-                  fname=‘char’, lname=‘kep’, email=‘forever@outlk.com')
+                  fname=‘char’, lname=‘kep’, email=‘karen@gmail.com')
 
     sasha = User(username=‘lensmith’, password=‘lmnop’,
 
@@ -45,70 +45,6 @@ def  __init__(self,name)
 
 
 
-
-
-
-hobby_4 = 'dancing',
-
-hobby_5 = 'escape rooms',
-
-hobby_6 = 'wine bars',
-
-hobby_7 = 'historic',
-
-hobby_8 = 'dogs',
-
-hobby_9 = 'kids',
-
-hobby_10 = 'scenic'
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def hobby_2():
-   user_hobby = 'hobby 2'
-
-
-def hobby_3:
-  user_hobby = 'hobby 3'
-
-
-def hobby_4():
-  user_hobby'hobby 4'
-
-def hobby_5():
-   'hobby 5')
-
-def hobby6():
-  print ('hobby 6')
-
-def hobby_7():
-    print ('hobby 7')
-
-def hobby_8():
-    print ('hobby 8')
-
-def hobby_1():
-    print ('hobby 1')
 
 
 

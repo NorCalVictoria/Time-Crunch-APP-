@@ -4,13 +4,14 @@ from random import choice
 from flask import render_template , flash
 from flask import Flask, request, redirect
 import jinja2
-
+from flask_sqlalchemy import SQLAlchemy
 #from model import connect_to_db, db
-
-
+ 
 
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///timeCrunch'
+
 
 
                         #Routing#
@@ -21,45 +22,66 @@ def index():
     return render_template('homepage.html')
 
 
-@app.route('/login', methods=['GET'])
-def login_form():
-    """Show login form."""
-    return render_template("login.html")
+@app.route('/search', methods=['GET'])
+def search_form():
+    return render_template('search.html')
 
-@app.route('/login', methods=['POST'])
+@app.route('/search', methods=['POST'])
+def place_search():
 
-def login_process():
+    return render_template('search.html')
 
-    """Process login."""
-     # Get form variables
+@app.route('/login', methods=['GET', 'POST'])
+def route_login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+ 
+        user = User.query(email=email).first()
+ 
+        if not user:
+            flash('No such user')
+            return redirect(url_for('/homepage'))
 
-    email = request.form["email"]
+# @app.route('/login', methods=['GET'])
+# def login_form():
+#     """Show login form."""
+#     return render_template("login.html")
 
-    password = request.form["password"]
+# @app.route('/login', methods=['POST'])
 
+# def login_process():
 
-    user = User.query.filter_by(email=email).first()
+#     """Process login."""
+#      # Get form variables
+#     #return render_template('/homepage')
+#     email = request.form["email"]
 
-    if not user:
-
-        flash("No such user")
-
-    return redirect("/login")
-
-    if user.password != password:
-
-        flash("Incorrect password")
-
-    return redirect("/login")
-
-    session["user_id"] = user.user_id
+#     password = request.form["password"]
 
 
-    flash("You are now logged in")
+#     user = User.query(email=email).first()
 
-    return redirect("/search/{}".format(user.user_id))
+#     if not user:
+
+#         flash("No such user")
+
+#         return redirect("/homepage")
+
+        if user.password != password:
+
+            flash("Incorrect password")
+
+            return redirect("/signUp")
+
+        session["user_id"] = user.user_id
 
 
+        flash("You are now logged in")
+        return render_template('search.html') 
+        # return redirect("/WHAT HERE???/{}".format(user.user_id))
+    return render_template('login.html') #change this later 
+     
 @app.route('/logoff')
 def logout():
     """Log out."""
@@ -103,6 +125,8 @@ def signup_process():
     #return redirect('/settings')
 
 
+
+
                                     #Profile Upload#
 # @app.route('/profile_img', methods=['GET', 'POST'])
 # def upload():
@@ -116,9 +140,11 @@ def signup_process():
 #         user.photo = '/' + app.config['UPLOADED_PHOTOS_DEST'] + '/' + path
 #         db.session.commit()
 
-
+#from model import User 
 if __name__ == '__main__':
+
     # error messages and reload
     # our web app if we change the code.
     app.run(debug=True)
-    #app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0")
+

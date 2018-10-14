@@ -1,14 +1,10 @@
 """time crunch database model for app"""
 
-from flask import Flask
+#from server import db
 
+from flask_sqlalchemy import SQLAlchemy 
 
-from flask_sqlalchemy import SQLAlchemy
-
-
-
-db = SQLAlchemy()
-
+db = SQLAlchemy() 
 
 #----------------------------------------------------------------------#
      # defs for model #
@@ -56,20 +52,29 @@ class User_Hobby(db.Model):
     hobby = db.relationship('Hobby')
 #-----------------------------------------------------------------------#
 # Helper functions #
+    
+#if __name__ == "__main__":
+  
 
-    def connect_to_db(app, db_uri='postgresql:///timeCrunch'):
-    """Connect the database."""
-
-    # Configure the PstgreSQL database
+    # from server import app
+    # connect_to_db(app)
+    # db.create_all()
+    # print ("Connected to DB.")
+def connect_to_db(app, db_uri='postgresql:///timeCrunch'):
+    
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-    app.config['SQLALCHEMY_ECHO'] = True   
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
 
+
 if __name__ == "__main__":
-  
 
     from server import app
     connect_to_db(app)
-    db.create_all()
-    print ("Connected to DB.")
+    print("Connected to DB.")
+
+
+
+
+

@@ -1,23 +1,27 @@
 {% extends 'base.html' %}
+
+
+
+
 {% block title %}
-      login page
+     HOMEPAGE TITLE
 {% endblock %}
 
 
 {% block content %}
 <div id="login">
-  <h1>Log in</h1>
+  <h1>HOMEPAGE</h1>
 
   <form action="/login">        
-    <input type="Username" placeholder="Username" />
-    <input type="password" placeholder="Password" />        
+    <!-- <input type="Username" placeholder="Username" />
+    <input type="password" placeholder="Password" />  -->       
     <input  type="submit" value="Log in" />    
   </form>
 </div>
 <br>
 
 <div>
-<a class='btn btn-link' type='button' href='/signUp'>Sign Up Here</a> 
+<a class='btn btn-link' type='button' href='/signUp'>Link to signUp !</a> 
 </div>
 
 {% endblock %}

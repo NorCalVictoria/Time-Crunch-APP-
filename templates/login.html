@@ -1,9 +1,51 @@
 
-<title>Login</title>
+<title>log in !</title>
 
 
 {% extends 'base.html' %}
 
+
+{% block title %}
+      log in
+{% endblock %}
+
+
+{% block content %}
+
+<a class="navbar-brand" href="#"><img src="/static/OWL.jpg" width="600" height="400" alt=""></a> 
+
+
+
+
+<div id="login">
+  <h1>Log in</h1><!--first page user sees-->
+
+  <form method="POST">
+        
+    <input type="email" name="email" placeholder="email here" />
+    <input type="password" name="password" placeholder="password here" />      
+    <input  type="submit" value="enter" />    
+  </form>
+</div>
+<br>
+
+<div>
+<a class='btn btn-link' type='button' href='/signUp'>Sign Up Here Now</a> 
+</div>
+
+
+
+<br>
+<br>
+<div>
+<a class='btn btn-link' type='button' href='/search'>ToSearch</a> 
+</div>
+
+{% endblock %}
+
+
+
+<!-- 
 {% block body %}
 
 
@@ -14,7 +56,7 @@
   <br>  
    <div class='row'>
     <form action="/login" method="POST" class='mx-auto'>
-      <h1 class='text-center'></h1>
+      <h1 class='text-center'>Time Crunch</h1>
       <div>
         <label>
           <input type="email" class='form-control' style='width:15rem; ' name="email" placeholder='email' required>
@@ -37,3 +79,5 @@
 
 
 {% endblock %}
+
+ -->
