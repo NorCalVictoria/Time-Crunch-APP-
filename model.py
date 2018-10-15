@@ -1,10 +1,10 @@
 """time crunch database model for app"""
 
 #from server import db
-
+import psycopg2
 from flask_sqlalchemy import SQLAlchemy 
-
-db = SQLAlchemy() 
+from sqlalchemy.orm import mapper
+db = SQLAlchemy(app) 
 
 #----------------------------------------------------------------------#
      # defs for model #
@@ -15,12 +15,11 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(40), nullable=False)
     password = db.Column(db.String(20), nullable=False)
     fname = db.Column(db.String(20), nullable=True)
     lname = db.Column(db.String(20), nullable=True)
-
-
+   
 
     hobbies = db.relationship('Hobby',secondary='user_hobbies',backref='users')
 

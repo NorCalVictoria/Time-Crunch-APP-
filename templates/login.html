@@ -1,9 +1,40 @@
 
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+      <form class="form-signin" method="POST" action="/login">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.username) }}
+        {{ wtf.form_field(form.password) }}
+        {{ wtf.form_field(form.remember) }}
+        
+       
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+
+    </div> <!-- /container -->
+{% endblock %}
+
+
+<!-- 
 <title>log in !</title>
 
 
 {% extends 'base.html' %}
-
+ 
 
 {% block title %}
       log in
@@ -18,7 +49,7 @@
 
 
 <div id="login">
-  <h1>Log in</h1><!--first page user sees-->
+  <h1>Log in</h1><
 
   <form method="POST">
         
@@ -27,57 +58,19 @@
     <input  type="submit" value="enter" />    
   </form>
 </div>
+
 <br>
 
 <div>
 <a class='btn btn-link' type='button' href='/signUp'>Sign Up Here Now</a> 
 </div>
 
-
-
 <br>
 <br>
+
 <div>
 <a class='btn btn-link' type='button' href='/search'>ToSearch</a> 
 </div>
 
 {% endblock %}
-
-
-
-<!-- 
-{% block body %}
-
-
-  <div class='container mx-auto'>
-  <br>
-  <br>
-  <br>
-  <br>  
-   <div class='row'>
-    <form action="/login" method="POST" class='mx-auto'>
-      <h1 class='text-center'>Time Crunch</h1>
-      <div>
-        <label>
-          <input type="email" class='form-control' style='width:15rem; ' name="email" placeholder='email' required>
-        </label>
-      </div>
-
-      <div>
-        <label>
-          <input type="password" class='form-control' name="password" ' placeholder='password' required>
-        </label>
-      </div>
-
-      <div>
-        <input type="submit" class='btn btn-primary' style='width:15rem; background-color: none; border-color: #000060;' value="login">   
-      </div>
-    </form>
-   </div> 
-  </div> 
-
-
-
-{% endblock %}
-
  -->

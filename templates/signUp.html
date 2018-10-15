@@ -1,5 +1,51 @@
+{% extends "bootstrap/base.html" %}
 
-<title> signup PAGE</title>
+{% block title %}
+Sign Up
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <form class="form-signin">
+    <h2 class="form-signin-heading">Sign Up</h2>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+  </form>
+
+</div> <!-- /container -->
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{# this is a comment 
+
+
+
+<!-- <title> signup PAGE</title>
 
 
 {% extends 'base.html' %}
@@ -57,78 +103,78 @@
     </div>
   </div>  
   <div>
-    <!-- ADD DROP DOWN HOBBY SELECTOR HERE -->
+                       ADD DROP DOWN HOBBY SELECTOR HERE 
     <div>
       <input type="submit" class='btn btn-primary' value="Submit">
     </div>
 
-    {# this is a comment 
-    <!-- <div>
+   
+     <div>
 
       <input type='file' name='photo'> 
 
-    </div> -->
-    #}
+    </div> 
+   
 
   </form>
 </div>
 
-<!-- hobby choices below -->
+                                   hobby choices below
 
 <div class="checkbox">
     <label>
         <input type="checkbox" value="option1">
-        food
+        Foodie
     </label>
 </div>
 <div class="checkbox">
     <label>
         <input type="checkbox" value="option2">
-        museums
+        Museums
     </label>
 </div>
 <div class="checkbox">
     <label>
         <input type="checkbox" value="option3">
-       landmarks
+       Landmarks
     </label>
 </div><div class="checkbox">
     <label>
         <input type="checkbox" value="option4">
-        Hobby4
+        Dancing / Music
     </label>
 </div><div class="checkbox">
     <label>
         <input type="checkbox" value="option5">
-        Hobby5
+        Wine bars
     </label>
 </div><div class="checkbox">
     <label>
         <input type="checkbox" value="option6">
-        Hobby6
+        Dogs
     </label>
 </div><div class="checkbox">
     <label>
         <input type="checkbox" value="option27">
-        Hobby7
+        Scenic
     </label>
 </div><div class="checkbox">
     <label>
         <input type="checkbox" value="option8">
-        Hobby8
+        Escape rooms
     </label>
 </div><div class="checkbox">
     <label>
         <input type="checkbox" value="option9">
-        Hobby9
+        Historic
     </label>
 </div><div class="checkbox">
     <label>
         <input type="checkbox" value="option10">
-        Hobby10
+        Kids
     </label>
 
-<!--
+
 </div>
 <div class="checkbox disabled">
     <label>
@@ -141,5 +187,4 @@
 
 {% endblock %}
 
-
-
+   #}

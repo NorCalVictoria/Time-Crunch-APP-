@@ -17,9 +17,9 @@ def random_seed():
 
                   fname=’mel’, lname=‘till’, email=‘tepp@gmail.com')
 
-    kris = User(username=’tek’, password=“76543”,
+    kriss= User(username=’tek’, password=“76543”,
 
-                  fname=‘wally’, lname=‘baker’, email=‘mora@gmail.com')
+                  fname=‘wally’, lname=‘baker’, email=‘krisstina@gmail.com')
 
     tom = User(username=‘gary’, password=’98765’,
 
