@@ -1,4 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+  ...
+</html>
 {% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
 
 {% block title %}
 Sign Up
@@ -47,19 +53,17 @@ Sign Up
 </form>
 
   <div class="container">
-  <form class="form-signin">
+  <form class="form-signin" method="POST" action="/signUp">
     <h2 class="form-signin-heading">Sign Up</h2>
+
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.username) }}
+    {{ wtf.form_field(form.email) }}
+    {{ wtf.form_field(form.password) }}
     <lu>Already User ? <a href="{{ url_for('login') }}">Login</a></lu>
     <br>
     <br>
-    <label for="inputUsername" class="sr-only">Username</label>
-    <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-    <br>
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-    <br>
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+   
     <br>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Join</button>
   </form>

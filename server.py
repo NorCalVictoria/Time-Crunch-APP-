@@ -2,10 +2,10 @@
 
 from random import choice
 from flask import render_template , flash
-from flask_login import LoginManager
+from flask_login import  LoginManager, UserMixin, login_user,login_required, logout_user, current_user
 
 
-from flask import Flask, request, redirect ,render_template
+from flask import Flask, request, redirect ,render_template, url_for
 import jinja2
 from flask_sqlalchemy import SQLAlchemy
 #from model import connect_to_db,
@@ -13,26 +13,30 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
+from werkzeug.security import generate_password_hash , check_password_hash
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] ='secretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///timeCrunch'
 db = SQLAlchemy(app) 
-bootstrap = Bootstrap(app)
+Bootstrap(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """User of time crunch web app."""
 
     __tablename__ = "users"
-    username = db.Column(db.String(20),nullable=False)
+    username = db.Column(db.String(30),nullable=False)
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     email = db.Column(db.String(40), nullable=False)
     password = db.Column(db.String(20), nullable=False)
     fname = db.Column(db.String(20), nullable=True)
     lname = db.Column(db.String(20), nullable=True)
-
+ 
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -60,16 +64,17 @@ class RegisterForm(FlaskForm):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    return render_template('login.html', form=form)
 
-    if form.validate_on_submit():
+    if form.validate_on_submit(): # when form submits enter block
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
                 return redirect(url_for('settings'))
 
-        return '<h1>Invalid username or password</h1>'
-        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
+        return '<h1> Invalid username or password </h1>'
+        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'#submitted data
 
     return render_template('login.html', form=form)
 
@@ -84,10 +89,20 @@ def signUp():
         db.session.commit()
 
         return '<h1>New user has been created!</h1>'
-        #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
+        #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'# another test
 
     return render_template('signUp.html', form=form)
 
+@app.route('/settings')
+@login_required
+def settings():
+    return render_template('settings.html', name=current_user.username)    
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user
+    return redirect(url_for('homepage'))
 # @app.route('/settings')
 # @login_required
 # def dashboard():

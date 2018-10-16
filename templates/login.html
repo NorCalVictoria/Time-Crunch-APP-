@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+  ...
+</html>
+
+
+
+
+
 
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
@@ -53,7 +62,7 @@ Login
         {{ wtf.form_field(form.password) }}
         {{ wtf.form_field(form.remember) }}
         <br>
-         <li>New User ? <a href="{{ url_for('signUp') }}">SignUp</a></li>
+         <li> New User ? <a href="{{ url_for('signUp') }}"> SignUp</a></li>
        
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
