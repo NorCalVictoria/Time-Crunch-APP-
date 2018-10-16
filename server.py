@@ -30,12 +30,12 @@ class User(UserMixin, db.Model):
     """User of time crunch web app."""
 
     __tablename__ = "users"
-    username = db.Column(db.String(30),nullable=False)
+    username = db.Column(db.String(50),nullable=False)
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     email = db.Column(db.String(40), nullable=False)
-    password = db.Column(db.String(20), nullable=False)
-    fname = db.Column(db.String(20), nullable=True)
-    lname = db.Column(db.String(20), nullable=True)
+    password = db.Column(db.String(50), nullable=False)
+    fname = db.Column(db.String(50), nullable=True)
+    lname = db.Column(db.String(50), nullable=True)
  
 
 @login_manager.user_loader
@@ -56,7 +56,7 @@ class LoginForm(FlaskForm):
 
 class RegisterForm(FlaskForm):
     email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
+    username = StringField('username', validators=[InputRequired(), Length(min=4, max=20)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
 
 
@@ -99,7 +99,7 @@ def settings():
     return render_template('settings.html', name=current_user.username)    
 
 @app.route('/logout')
-@login_required
+#@login_required
 def logout():
     logout_user
     return redirect(url_for('homepage'))
