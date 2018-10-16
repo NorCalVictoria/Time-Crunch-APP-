@@ -6,13 +6,45 @@
 Login
 {% endblock %}
 
+
+
+{#
 {% block styles %}
 {{super()}}
 <link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
 {% endblock %}
+#}
+
 
 {% block content %}
+<br>
+<br>
+   
     <div class="container">
+
+       <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Time Crunch</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href='{{ url_for('homepage') }}'>Home</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('signUp') }}">SignUp</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    <br>
+    <br>
+
 
       <form class="form-signin" method="POST" action="/login">
         <h2 class="form-signin-heading">Please sign in</h2>
@@ -20,7 +52,8 @@ Login
         {{ wtf.form_field(form.username) }}
         {{ wtf.form_field(form.password) }}
         {{ wtf.form_field(form.remember) }}
-        
+        <br>
+         <li>New User ? <a href="{{ url_for('signUp') }}">SignUp</a></li>
        
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
@@ -29,6 +62,40 @@ Login
 {% endblock %}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#
 <!-- 
 <title>log in !</title>
 
@@ -74,3 +141,5 @@ Login
 
 {% endblock %}
  -->
+
+ #}

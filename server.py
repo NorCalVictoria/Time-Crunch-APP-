@@ -2,35 +2,52 @@
 
 from random import choice
 from flask import render_template , flash
+from flask_login import LoginManager
+
+
 from flask import Flask, request, redirect ,render_template
 import jinja2
 from flask_sqlalchemy import SQLAlchemy
-#from model import connect_to_db, db
+#from model import connect_to_db,
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 
 
-
 app = Flask(__name__)
-#app.config['SECRET_KEY'] ='secretKey'
+app.config['SECRET_KEY'] ='secretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///timeCrunch'
 db = SQLAlchemy(app) 
+bootstrap = Bootstrap(app)
 
-# class User(UserMixin, db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(15), unique=True)
-#     email = db.Column(db.String(50), unique=True)
-#     password = db.Column(db.String(80))
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.query.get(int(user_id))
+class User(db.Model):
+    """User of time crunch web app."""
+
+    __tablename__ = "users"
+    username = db.Column(db.String(20),nullable=False)
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    email = db.Column(db.String(40), nullable=False)
+    password = db.Column(db.String(20), nullable=False)
+    fname = db.Column(db.String(20), nullable=True)
+    lname = db.Column(db.String(20), nullable=True)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+@app.route('/')
+def homepage():
+    return render_template('homepage.html')
+
 
 class LoginForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
+    email = StringField('email', validators=[InputRequired(), Length(min=4, max=40)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+    username = StringField('username', validators=[InputRequired(), Length(min=2, max=40)])
     remember = BooleanField('remember me')
 
 class RegisterForm(FlaskForm):
@@ -39,9 +56,6 @@ class RegisterForm(FlaskForm):
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
 
 
-@app.route('/')
-def homepage():
-    return render_template('homepage.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -72,7 +86,7 @@ def signUp():
         return '<h1>New user has been created!</h1>'
         #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
 
-    return render_template('signup.html', form=form)
+    return render_template('signUp.html', form=form)
 
 # @app.route('/settings')
 # @login_required
@@ -210,8 +224,8 @@ def signUp():
 # # @app.route('/profile_img', methods=['GET', 'POST'])
 # # def upload():
 
-# #     user_id = session.get('user_id')
 # #     path = str(user_id) + ".jpg"
+# #     user_id = session.get('user_id')
 # #     if request.method == 'POST' and 'photo' in request.files:
 # #         request.files['photo'].filename = path
 # #         filename = photos.save(request.files['photo'])
@@ -226,4 +240,3 @@ if __name__ == '__main__':
     # our web app if we change the code.
     app.run(debug=True)
     app.run(host="0.0.0.0")
-

@@ -4,27 +4,76 @@
 Sign Up
 {% endblock %}
 
+
+
+{#
 {% block styles %}
 {{super()}}
 <link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
 {% endblock %}
+#}
+
+
 
 {% block content %}
-<div class="container">
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{{ url_for('login') }}">Time Crunch</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href='{{ url_for('homepage') }}'>Home</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('signUp') }}">SignUp</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 
+
+<br>
+<br>
+<form>
+<div>
+ 
+</div>
+</form>
+
+  <div class="container">
   <form class="form-signin">
     <h2 class="form-signin-heading">Sign Up</h2>
+    <lu>Already User ? <a href="{{ url_for('login') }}">Login</a></lu>
+    <br>
+    <br>
     <label for="inputUsername" class="sr-only">Username</label>
     <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+    <br>
     <label for="inputEmail" class="sr-only">Email address</label>
     <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+    <br>
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+    <br>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Join</button>
   </form>
 
-</div> <!-- /container -->
+</div> 
 {% endblock %}
+
+
+
+
+
+
+
+
 
 
 

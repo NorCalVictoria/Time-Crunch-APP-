@@ -1,15 +1,77 @@
 {{% extends "bootstrap/base.html" %}
 
 {% block title %}
-Dashboard
+Settings
 {% endblock %}
+{#
+
+
 
 {% block styles %}
 {{super()}}
 <link rel="stylesheet" href="{{url_for('.static', filename='settings.css')}}">
 {% endblock %}
+#}
+
+
+
 
 {% block content %}
+<div class="checkbox">
+    <label>
+        <input type="checkbox" value="option1">
+        Foodie
+    </label>
+</div>
+<div class="checkbox">
+    <label>
+        <input type="checkbox" value="option2">
+        Museums
+    </label>
+</div>
+<div class="checkbox">
+    <label>
+        <input type="checkbox" value="option3">
+       Landmarks
+    </label>
+</div><div class="checkbox">
+    <label>
+        <input type="checkbox" value="option4">
+        Dancing / Music
+    </label>
+</div><div class="checkbox">
+    <label>
+        <input type="checkbox" value="option5">
+        Wine Bars
+    </label>
+</div><div class="checkbox">
+    <label>
+        <input type="checkbox" value="option6">
+        Dogs
+    </label>
+</div><div class="checkbox">
+    <label>
+        <input type="checkbox" value="option27">
+        Scenic
+    </label>
+</div><div class="checkbox">
+    <label>
+        <input type="checkbox" value="option8">
+        Escape rooms
+    </label>
+</div><div class="checkbox">
+    <label>
+        <input type="checkbox" value="option9">
+        Historic
+    </label>
+</div><div class="checkbox">
+    <label>
+        <input type="checkbox" value="option10">
+        Kids
+    </label>
+
+
+</div>
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -25,7 +87,7 @@ Dashboard
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">Settings</a></li>
            
-            <li><a href="#">Profile</a></li>
+            <li><a href="#">Search</a></li>
             <li><a href="#">Log Out</a></li>
           </ul>
           <form class="navbar-form navbar-right">

@@ -1,9 +1,11 @@
 """time crunch database model for app"""
 
-#from server import db
+from server import db
 import psycopg2
 from flask_sqlalchemy import SQLAlchemy 
 from sqlalchemy.orm import mapper
+from server import app
+
 db = SQLAlchemy(app) 
 
 #----------------------------------------------------------------------#
@@ -19,7 +21,7 @@ class User(db.Model):
     password = db.Column(db.String(20), nullable=False)
     fname = db.Column(db.String(20), nullable=True)
     lname = db.Column(db.String(20), nullable=True)
-   
+    username = db.Column(db.String(20), nullable=False)
 
     hobbies = db.relationship('Hobby',secondary='user_hobbies',backref='users')
 
@@ -27,7 +29,6 @@ class User(db.Model):
         """helpful representation""" 
 
         return "<User user_id=%s email=%s>" % (self.user_id, self.email) #MORE FORMATTING NEEDED
-# list of hobbies here #
 
 class Hobby(db.Model):
     """Hobbies that user chooses from"""
@@ -51,16 +52,10 @@ class User_Hobby(db.Model):
     hobby = db.relationship('Hobby')
 #-----------------------------------------------------------------------#
 # Helper functions #
-    
-#if __name__ == "__main__":
-  
 
-    # from server import app
-    # connect_to_db(app)
-    # db.create_all()
-    # print ("Connected to DB.")
+
 def connect_to_db(app, db_uri='postgresql:///timeCrunch'):
-    
+
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
@@ -72,8 +67,3 @@ if __name__ == "__main__":
     from server import app
     connect_to_db(app)
     print("Connected to DB.")
-
-
-
-
-

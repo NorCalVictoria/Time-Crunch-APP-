@@ -1,20 +1,23 @@
 {% extends "bootstrap/base.html" %}
 
 {% block title %}
-HOMEPAGE
+Home
 {% endblock %}
 
+
+{#
 {% block styles %}
 {{super()}}
 <link rel="stylesheet" href="{{url_for('.static', filename='starter-template.css')}}">
 {% endblock %}
+#}
 
 {% block content %}
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only">nav</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -25,7 +28,7 @@ HOMEPAGE
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
             <li><a href="{{ url_for('login') }}">Login</a></li>
-            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            <li><a href="{{ url_for('signUp') }}">SignUp</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -33,9 +36,9 @@ HOMEPAGE
 
     <div class="container">
 
-      <div class="starter-template">
+      <div class="startTemp">
         <h1>Make use of your free time !</h1>
-        <p class="lead">Customize your fun<br>Your hobbies on demand</p>
+        <p class="lead">Customize your free time.<br>Everywhere.</p>
       </div>
 
     </div><!-- /.container -->

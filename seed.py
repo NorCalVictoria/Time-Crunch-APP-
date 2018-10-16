@@ -1,65 +1,56 @@
-from model import connect_to_db, db 
-from server import app
+from model import connect_to_db, db, User, Hobby, User_Hobby
 
 
+def seed():
 
+    db.create_all()
 
+    User.query.delete()
+    Hobby.query.delete()
+    User_Hobby.query.delete()
 
+    karen = User(username='kare', password='12345600', fname='char',
+                 lname='kep', email='karen@gmail.com')
 
-def random_seed():    
-  print('User')
+    sasha = User(username='lensmith', password='lmnop000',
+                 fname='mel', lname='till', email='tepp@gmail.com')
 
-    karen = User(username=‘kare’, password=’123456’, 
+    kris = User(username='tek', password='7654300', fname='wally',
+                lname='baker', email='krisstina@gmail.com')
 
-                  fname=‘char’, lname=‘kep’, email=‘karen@gmail.com')
+    tom = User(username='gary', password='98765000', fname='cara',
+               lname='walker', email='sooner@gmail.com')
 
-    sasha = User(username=‘lensmith’, password=‘lmnop’,
+    hobby1 = Hobby(name='foodie')
+    hobby2 = Hobby(name='museums')
+    hobby3 = Hobby(name='landmark')
+    hobby4 = Hobby(name='dancing')
+    hobby5 = Hobby(name='escape rooms')
+    hobby6 = Hobby(name='wine bars')
+    hobby7 = Hobby(name='dogs')
+    hobby8 = Hobby(name='scenic')
+    hobby9 = Hobby(name='historic')
+    hobby10 = Hobby(name='kids')
+    hobby11 = Hobby(name='shopping')
 
-                  fname=’mel’, lname=‘till’, email=‘tepp@gmail.com')
+    db.session.add_all([karen, sasha, kris, tom,
+                        hobby1, hobby2, hobby3, hobby4, hobby5,
+                        hobby6, hobby7, hobby8, hobby9, hobby10])
 
-    kriss= User(username=’tek’, password=“76543”,
+    db.session.commit()
 
-                  fname=‘wally’, lname=‘baker’, email=‘krisstina@gmail.com')
+    karen.hobbies.extend([hobby3, hobby6, hobby9])
+    tom.hobbies.extend([hobby8, hobby5])
+    kris.hobbies.extend([hobby1, hobby7])
+    sasha.hobbies.extend([hobby4, hobby7, hobby5])
 
-    tom = User(username=‘gary’, password=’98765’,
-
-                  fname=‘cara’, lname=’walker’, email=‘sooner@gmail.com’)
-
-
-    #define  ten hobbies#
-
-def  __init__(self,name)
-
-
-    hobby =  User_Hobby('foodie'),
-    hobby =  User_Hobby('museums'),
-    hobby =  User_Hobby('landmark'),
-    hobby =  User_Hobby('dancing'),
-    hobby =  User_Hobby('escape rooms'),
-    hobby =  User_Hobby('wine bars'),
-    hobby =  User_Hobby('dogs'),
-    hobby =  User_Hobby('scenic'),
-    hobby =  User_Hobby('historic'),
-    hobby =  User_Hobby('kids')
-
-
-
-
-
-
-
-
-
-
-
-    db.session.add_all([karen, sasha, kris, tom])
 
     db.session.commit()
 
 
+if __name__ == '__main__':
+    from flask import Flask
+    app = Flask(__name__)
 
-
-    # if __name__ == '__main__':
-    # connect_to_db(app)
-    
-    # db.create_all()
+    connect_to_db(app)
+    seed()
