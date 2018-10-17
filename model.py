@@ -17,15 +17,18 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(40), nullable=False)
-    password = db.Column(db.String(20), nullable=False)
-    fname = db.Column(db.String(20), nullable=True)
-    lname = db.Column(db.String(20), nullable=True)
-    username = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(80), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    fname = db.Column(db.String(80), nullable=True)
+    lname = db.Column(db.String(80), nullable=True)
+    username = db.Column(db.String(80), nullable=False)
 
     hobbies = db.relationship('Hobby',secondary='user_hobbies',backref='users')
 
     def __repr__(self):
+
+
+
         """helpful representation""" 
 
         return "<User user_id=%s email=%s>" % (self.user_id, self.email) #MORE FORMATTING NEEDED

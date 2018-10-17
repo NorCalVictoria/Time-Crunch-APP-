@@ -35,7 +35,7 @@ def seed():
 
     db.session.add_all([karen, sasha, kris, tom,
                         hobby1, hobby2, hobby3, hobby4, hobby5,
-                        hobby6, hobby7, hobby8, hobby9, hobby10])
+                        hobby6, hobby7, hobby8, hobby9, hobby10, hobby11 ])
 
     db.session.commit()
 

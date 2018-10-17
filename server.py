@@ -1,9 +1,9 @@
 """Greeting Flask app."""
 
 from random import choice
-from flask import render_template , flash
-from flask_login import  LoginManager, UserMixin, login_user,login_required, logout_user, current_user
-
+from flask import render_template, flash
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from io import StringIO
 
 from flask import Flask, request, redirect ,render_template, url_for
 import jinja2
@@ -13,13 +13,16 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
-from werkzeug.security import generate_password_hash , check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+
+
+
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] ='secretKey'
+app.config['SECRET_KEY'] = 'secretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///timeCrunch'
-db = SQLAlchemy(app) 
+db = SQLAlchemy(app)
 Bootstrap(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -27,20 +30,20 @@ login_manager.login_view = 'login'
 
 
 class User(UserMixin, db.Model):
-    """User of time crunch web app."""
 
     __tablename__ = "users"
-    username = db.Column(db.String(50),nullable=False)
+    username = db.Column(db.String(80), nullable=False)
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(40), nullable=False)
-    password = db.Column(db.String(50), nullable=False)
-    fname = db.Column(db.String(50), nullable=True)
-    lname = db.Column(db.String(50), nullable=True)
- 
+    email = db.Column(db.String(80), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    fname = db.Column(db.String(80), nullable=True)
+    lname = db.Column(db.String(80), nullable=True)
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+
+
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return User.query.get(int(user_id))
 
 
 @app.route('/')
@@ -49,34 +52,16 @@ def homepage():
 
 
 class LoginForm(FlaskForm):
-    email = StringField('email', validators=[InputRequired(), Length(min=4, max=40)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+
+    password = PasswordField('password', validators=[InputRequired(), Length(min=2, max=80)])
     username = StringField('username', validators=[InputRequired(), Length(min=2, max=40)])
     remember = BooleanField('remember me')
 
 class RegisterForm(FlaskForm):
     email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=20)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+    username = StringField('username', validators=[InputRequired(), Length(min=4, max=100)])
+    password = PasswordField('password', validators=[InputRequired(), Length(min=2, max=100)])
 
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    return render_template('login.html', form=form)
-
-    if form.validate_on_submit(): # when form submits enter block
-        user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
-                return redirect(url_for('settings'))
-
-        return '<h1> Invalid username or password </h1>'
-        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'#submitted data
-
-    return render_template('login.html', form=form)
 
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
@@ -93,6 +78,30 @@ def signUp():
 
     return render_template('signUp.html', form=form)
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    # if request.method == 'POST':
+    # import pdb; pdb.set_trace()
+
+    if form.validate_on_submit():# when form submits enter block
+        return render_template('settings.html')
+           # user = User.query.filter_by(username=form.username.data).first()
+            #if user:
+               # if check_password_hash(user.password, form.password.data):
+                #if user.password == form.password.data
+                  #  login_user(user, remember=form.remember.data)
+        #return redirect(url_for('settings'))
+
+        #return '<h1> Invalid username or password </h1>'
+        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'#submitted data
+    else:
+        flash(f"Form has errors: {form.errors}")
+        redirect('/login')
+
+    return render_template('login.html', form=form)
+
 @app.route('/settings')
 @login_required
 def settings():
@@ -105,7 +114,7 @@ def logout():
     return redirect(url_for('homepage'))
 # @app.route('/settings')
 # @login_required
-# def dashboard():
+# def settings():
 #     return render_template('settings.html', name=current_user.username)
 
 # @app.route('/logout')
@@ -115,9 +124,54 @@ def logout():
 #     return redirect(url_for('homepage'))
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #                         #Routing#
 # @app.route('/')
-# def index():
+# def homepage():
 #     """Homepage"""    #Landing Page ?
 
 #     return render_template('homepage.html')
