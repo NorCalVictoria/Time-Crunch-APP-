@@ -15,9 +15,9 @@ from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 
+import urllib.request, json
 
-
-
+from key import key
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretKey'
@@ -122,6 +122,37 @@ def logout():
 # def logout():
 #     logout_user()
 #     return redirect(url_for('homepage'))
+
+
+
+##########  MAP SEARCH ##############
+
+
+
+
+
+search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+details_url = "https://maps.googleapis.com/maps/api/place/details/json"
+
+@app.route("/", methods=["GET"])
+def retreive():
+    return render_template('layout.html') 
+
+@app.route("/sendRequest/<string:query>")
+def results(query):
+    search_payload = {"key":key, "query":query}
+    search_req = requests.get(search_url, params=search_payload)
+    search_json = search_req.json()
+
+    place_id = search_json["results"][0]["place_id"]
+
+    details_payload = {"key":key, "placeid":place_id}
+    details_resp = requests.get(details_url, params=details_payload)
+    details_json = details_resp.json()
+
+    url = details_json["result"]["url"]
+    return jsonify({'result' : url})
+
 
 
 
