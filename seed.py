@@ -44,13 +44,11 @@ def seed():
     kris.hobbies.extend([hobby1, hobby7])
     sasha.hobbies.extend([hobby4, hobby7, hobby5])
 
-
     db.session.commit()
 
 
 if __name__ == '__main__':
     from flask import Flask
     app = Flask(__name__)
-
     connect_to_db(app)
     seed()

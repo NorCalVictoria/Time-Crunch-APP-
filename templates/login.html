@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-  ...
-</html>
-
-
-
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
 Login
 {% endblock %}
-
 
 
 {#
@@ -22,36 +14,13 @@ Login
 #}
 
 
+{% block navbar %}
+{% include 'navbar.html' %}
+{% endblock %}
+
+
 {% block content %}
-<br>
-<br>
-   
-    <div class="container">
-
-       <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Time Crunch</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href='{{ url_for('homepage') }}'>Home</a></li>
-            <li><a href="{{ url_for('login') }}">Login</a></li>
-            <li><a href="{{ url_for('signUp') }}">SignUp</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-    <br>
-    <br>
-
-
+  <div class="container">
       <form class="form-signin" method="POST" action="/login">
         <h2 class="form-signin-heading">Please sign in</h2>
         {{ form.hidden_tag() }}
@@ -65,6 +34,7 @@ Login
       </form>
 
     </div> <!-- /container -->
+    {% include 'flashed.html' %}
 {% endblock %}
 
 

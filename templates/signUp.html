@@ -1,58 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-  ...
-</html>
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-
-{% block title %}
-Sign Up
-{% endblock %}
-
+{% block title %} Sign Up {% endblock %}
 
 
 {#
-{% block styles %}
-{{super()}}
-<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
-{% endblock %}
+    {% block styles %}
+    {{super()}}
+    <link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
+  {% endblock %}
 #}
 
 
 
-{% block content %}
- <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{ url_for('login') }}">Time Crunch</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href='{{ url_for('homepage') }}'>Home</a></li>
-            <li><a href="{{ url_for('login') }}">Login</a></li>
-            <li><a href="{{ url_for('signUp') }}">SignUp</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+{% block navbar %}
+{% include 'navbar.html' %}
+{% endblock %}
 
 
-<br>
-<br>
-<form>
-<div>
- 
-</div>
-</form>
+{% block content%}
 
-  <div class="container">
+<div class="container">
   <form class="form-signin" method="POST" action="/signUp">
     <h2 class="form-signin-heading">Sign Up</h2>
 
@@ -69,7 +37,10 @@ Sign Up
   </form>
 
 </div> 
+
+{% include 'flashed.html' %}
 {% endblock %}
+
 
 
 
@@ -173,68 +144,7 @@ Sign Up
 </div>
 
                                    hobby choices below
-
-<div class="checkbox">
-    <label>
-        <input type="checkbox" value="option1">
-        Foodie
-    </label>
-</div>
-<div class="checkbox">
-    <label>
-        <input type="checkbox" value="option2">
-        Museums
-    </label>
-</div>
-<div class="checkbox">
-    <label>
-        <input type="checkbox" value="option3">
-       Landmarks
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option4">
-        Dancing / Music
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option5">
-        Wine bars
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option6">
-        Dogs
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option27">
-        Scenic
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option8">
-        Escape rooms
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option9">
-        Historic
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option10">
-        Kids
-    </label>
-
-
-</div>
-<div class="checkbox disabled">
-    <label>
-        <input type="checkbox" value="option3" disabled>
-        DisAble
-    </label>
-</div> 
+ 
 -->
 
 

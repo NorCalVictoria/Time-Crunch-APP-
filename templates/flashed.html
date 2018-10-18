@@ -1,0 +1,8 @@
+<div class="container">
+    <ul>
+    Flashed messages go here:
+    {% for message in get_flashed_messages() %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+</div>

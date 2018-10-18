@@ -1,49 +1,31 @@
 """Greeting Flask app."""
-
+from model import User, Hobby, User_Hobby, db, connect_to_db
 from random import choice
-from flask import render_template, flash
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, session
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from io import StringIO
-
-from flask import Flask, request, redirect ,render_template, url_for
 import jinja2
 from flask_sqlalchemy import SQLAlchemy
-#from model import connect_to_db,
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash
-
-import urllib.request, json
-
 from key import key
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///timeCrunch'
-db = SQLAlchemy(app)
+
 Bootstrap(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 
-class User(UserMixin, db.Model):
-
-    __tablename__ = "users"
-    username = db.Column(db.String(80), nullable=False)
-    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(80), nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-    fname = db.Column(db.String(80), nullable=True)
-    lname = db.Column(db.String(80), nullable=True)
-
-
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.query.get(int(user_id))
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 @app.route('/')
@@ -52,83 +34,79 @@ def homepage():
 
 
 class LoginForm(FlaskForm):
-
-    password = PasswordField('password', validators=[InputRequired(), Length(min=2, max=80)])
-    username = StringField('username', validators=[InputRequired(), Length(min=2, max=40)])
+    password = PasswordField('password',
+                             validators=[InputRequired(), Length(min=2, max=80)])
+    username = StringField('username',
+                           validators=[InputRequired(), Length(min=2, max=40)])
     remember = BooleanField('remember me')
 
+
 class RegisterForm(FlaskForm):
-    email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=100)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=2, max=100)])
+    email = StringField('email',
+                        validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
+    username = StringField('username',
+                           validators=[InputRequired(), Length(min=4, max=100)])
+    password = PasswordField('password',
+                             validators=[InputRequired(), Length(min=2, max=100)])
 
 
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
-    form = RegisterForm()
+
+    form = RegisterForm(request.form)
+    if request.method == 'GET':
+        return render_template('signUp.html', form=form)
 
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        hashed_password = generate_password_hash(form.password.data,
+                                                 method='sha256')
+        new_user = User(username=form.username.data, email=form.email.data,
+                        password=hashed_password)
+
         db.session.add(new_user)
         db.session.commit()
 
-        return '<h1>New user has been created!</h1>'
-        #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'# another test
+        session['user_id'] = new_user.id
 
-    return render_template('signUp.html', form=form)
+        return redirect(url_for('settings'))
+    flash(f"Form has errors: {form.errors}")
+    return redirect('/signUp')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    # if request.method == 'POST':
-    # import pdb; pdb.set_trace()
+    form = LoginForm(request.form)
+    
+    if request.method == 'GET':
+        return render_template('login.html', form=form)
 
     if form.validate_on_submit():# when form submits enter block
-        return render_template('settings.html')
-           # user = User.query.filter_by(username=form.username.data).first()
-            #if user:
-               # if check_password_hash(user.password, form.password.data):
-                #if user.password == form.password.data
-                  #  login_user(user, remember=form.remember.data)
-        #return redirect(url_for('settings'))
-
-        #return '<h1> Invalid username or password </h1>'
-        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'#submitted data
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            hashed_password = generate_password_hash(form.password.data,
+                                                     method='sha256')
+            if check_password_hash(user.password, hashed_password):
+                login_user(user, remember=form.remember.data)
+        return redirect(url_for('settings'))
     else:
         flash(f"Form has errors: {form.errors}")
-        redirect('/login')
-
-    return render_template('login.html', form=form)
+        return redirect('/login')
+    #return render_template('login.html', form=form)
 
 @app.route('/settings')
-@login_required
+# @login_required
 def settings():
-    return render_template('settings.html', name=current_user.username)    
+    return render_template('settings.html', name=current_user.username)
 
 @app.route('/logout')
-#@login_required
+# @login_required
 def logout():
-    logout_user
+    logout_user()
     return redirect(url_for('homepage'))
-# @app.route('/settings')
-# @login_required
-# def settings():
-#     return render_template('settings.html', name=current_user.username)
-
-# @app.route('/logout')
-# @login_required
-# def logout():
-#     logout_user()
-#     return redirect(url_for('homepage'))
 
 
 
 ##########  MAP SEARCH ##############
-
-
-
 
 
 search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
@@ -140,66 +118,18 @@ def retreive():
 
 @app.route("/sendRequest/<string:query>")
 def results(query):
-    search_payload = {"key":key, "query":query}
-    search_req = requests.get(search_url, params=search_payload)
+    search_payload = {"key": key, "query": query}
+    search_req = request.get(search_url, params=search_payload)
     search_json = search_req.json()
 
     place_id = search_json["results"][0]["place_id"]
 
-    details_payload = {"key":key, "placeid":place_id}
-    details_resp = requests.get(details_url, params=details_payload)
+    details_payload = {"key": key, "placeid": place_id}
+    details_resp = request.get(details_url, params=details_payload)
     details_json = details_resp.json()
 
     url = details_json["result"]["url"]
-    return jsonify({'result' : url})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return jsonify({'result': url})
 #                         #Routing#
 # @app.route('/')
 # def homepage():
@@ -260,7 +190,7 @@ def results(query):
 
 #     #         return redirect("/signUp")
 
-#     #     session["user_id"] = user.user_id
+#     #     session["user_id"] = user.id
 
 
 #     #     flash("You are now logged in")
@@ -333,10 +263,10 @@ def results(query):
 # #         user.photo = '/' + app.config['UPLOADED_PHOTOS_DEST'] + '/' + path
 # #         db.session.commit()
 
-#from model import User 
 if __name__ == '__main__':
 
     # error messages and reload
     # our web app if we change the code.
+    connect_to_db(app)
     app.run(debug=True)
     app.run(host="0.0.0.0")
