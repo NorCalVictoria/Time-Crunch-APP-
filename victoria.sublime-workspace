@@ -1,0 +1,316 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"id",
+				"id"
+			],
+			[
+				"uesr",
+				"user_id"
+			],
+			[
+				"me",
+				"methods"
+			],
+			[
+				"__",
+				"__name__"
+			],
+			[
+				"js",
+				"jsonify"
+			],
+			[
+				"order",
+				"order_type"
+			],
+			[
+				"last",
+				"last_char"
+			],
+			[
+				"nex",
+				"next_word"
+			],
+			[
+				"ngra",
+				"ngram_level"
+			],
+			[
+				"possibl",
+				"possible_next_words"
+			],
+			[
+				"get_user",
+				"get_user_rating"
+			],
+			[
+				"rest",
+				"rest_ratings_dict"
+			],
+			[
+				"restaur",
+				"restaurant_ratings"
+			],
+			[
+				"rat",
+				"rating"
+			],
+			[
+				"ra",
+				"rating"
+			],
+			[
+				"restaura",
+				"restaurant"
+			],
+			[
+				"res",
+				"restaurant_ratings"
+			],
+			[
+				"resta",
+				"restaurant"
+			],
+			[
+				"re",
+				"restaurant_ratings"
+			],
+			[
+				"restau",
+				"Restaurant"
+			],
+			[
+				"restaurant_ratin",
+				"restaurant_ratings"
+			]
+		]
+	},
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 150.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/engineer/src/Time-Crunch-APP-/templates/signUp.html",
+		"/home/engineer/src/Time-Crunch-APP-/model.py",
+		"/home/engineer/src/Time-Crunch-APP-/server.py",
+		"/home/engineer/src/Time-Crunch-APP-/Time-Crunch-APP-/seed.py",
+		"/home/engineer/src/Time-Crunch-APP-/templates/base.html",
+		"/home/engineer/src/Time-Crunch-APP-/templates/homepage.html",
+		"/home/engineer/src/Time-Crunch-APP-/templates/login.html",
+		"/home/engineer/src/Time-Crunch-APP-/.gitignore",
+		"/home/engineer/src/Time-Crunch-APP-/Templates/signUp.html",
+		"/home/engineer/src/Time-Crunch-APP-/search.html",
+		"/home/engineer/src/Time-Crunch-APP-/Templates/login.html",
+		"/home/engineer/src/Time-Crunch-APP-/Templates/homepage.html",
+		"/home/engineer/src/Time-Crunch-APP-/signUp.html",
+		"/home/engineer/src/Time-Crunch-APP-/profile_img.html",
+		"/home/engineer/Desktop/homepage.html",
+		"/home/engineer/src/TimeCrunchApp/server.py",
+		"/home/engineer/src/TimeCrunchApp/model.py",
+		"/home/engineer/src/TimeCrunchApp/.gitignore",
+		"/home/engineer/Desktop/timeCrunchProject.html",
+		"/home/engineer/Desktop/model.py",
+		"/home/engineer/src/test.py",
+		"/home/engineer/src/test.js",
+		"/home/engineer/src/oo-practice-melons/harvest.py",
+		"/home/engineer/src/markov-chains/moby_dick.txt",
+		"/home/engineer/src/markov-chains/great-expectations.txt",
+		"/home/engineer/src/markov-chains/50-shades-of-grey.txt",
+		"/home/engineer/src/dicts-restaurant-ratings/ratings.py",
+		"/home/engineer/src/dicts-word-count/wordcount.py",
+		"/home/engineer/src/list-slicing/list_operations.py",
+		"/home/engineer/.cache/.fr-xZWuNb/google-python-exercises/basic/string1.py",
+		"/home/engineer/src/calculator-1/calculator.py",
+		"/home/engineer/src/calculator-1/calculator",
+		"/home/engineer/src/guessing-game/game.py",
+		"/home/engineer/src/thing.js",
+		"/home/engineer/src/blah.js",
+		"/home/engineer/.config/sublime-text-3/Packages/User/JavaScript.sublime-settings",
+		"/home/engineer/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/home/engineer/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+		"/home/engineer/.config/sublime-text-3/Packages/SublimeLinter/keymaps/Default (Linux).sublime-keymap",
+		"/home/engineer/src/ls",
+		"/home/engineer/.config/sublime-text-3/Packages/ESLint/ESLint.sublime-settings",
+		"/home/engineer/.config/sublime-text-3/Packages/User/ESLint.sublime-settings",
+		"/home/engineer/.eslintrc"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"current_user",
+			"mixin",
+			"connect",
+			"track",
+			"user_id",
+			"model",
+			")\n",
+			"anon",
+			"Anon",
+			"Anonymous",
+			"form"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.352250897144,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 30.0
+	},
+	"output.SublimeLinter Messages":
+	{
+		"height": 120.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 129.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 592.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 248.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

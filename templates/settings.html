@@ -1,105 +1,161 @@
-{% extends "bootstrap/base.html" %}
+{% extends "base.html" %}
+
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
-settings
-{% endblock %}
-
-
-
-
-{#
-{% block styles %}
-<link rel="stylesheet" href="{{url_for('.static', filename='settings.css')}}">
-{% endblock %}
-#}
-
-
-
-{{super()}}
-
-{% block navbar %}
-{% include 'navbar.html' %}
-{% endblock %}
+Search
+{% endblock title %}
 
 
 {% block content %}
-<div class="checkbox">
-    <label>
-        <input type="checkbox" value="option1">
-        Foodie
-    </label>
+
+<div id="settings-content" class="container">
+    
+    <h1 class="page-header">Welcome, {{ name }}</h1>
+
+{#------------------------- MAP BELOW ------------------------------#}
+
+<div style="float: right;">
+    <div id="map" style="width:900px; height:600px;"></div>
 </div>
-<div class="checkbox">
-    <label>
-        <input type="checkbox" value="option2">
-        Museums
-    </label>
+
+<div style="float: left; width: 400;">
+    <form name="frm_map" id="frm_map">
+        <table>
+            <tr>
+                <th>Address</th>
+                <td>
+                    <input type="text" name="address" id="address" value="Santa Monica, California">
+                </td>
+            </tr>
+            <tr>
+                <th>Radius</th>
+                <td>
+                    <input type="text" name="radius" id="radius" value="5" placeholder="In KM">
+                </td>
+            </tr>
+            <tr>
+                <th>Types</th>
+                <td>
+                    <div id="type_holder" style="height: 200px; overflow-y: scroll;">
+                        <!-- Dynamic Content -->    
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Show" id="submit" onclick="renderMap();">
+                    <input type="reset" value="Reset">
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
-<div class="checkbox">
-    <label>
-        <input type="checkbox" value="option3">
-       Landmarks
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option4">
-        Dancing / Music
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option5">
-        Wine Bars
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option6">
-        Dogs
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option27">
-        Scenic
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option8">
-        Escape rooms
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option9">
-        Historic
-    </label>
-</div><div class="checkbox">
-    <label>
-        <input type="checkbox" value="option10">
-        Kids
-    </label>
+
+</div>  <!-- container end -->
 
 
 
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-  <h1 class="page-header">Welcome, {{ name }}</h1>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDE5BClvl-Ttz9SnoNxuEqgzkBeujoUGjI&libraries=places&callback=initialize" async defer></script>
+
+<script>
+    
+    // Makes checkboxes for each activity
+    $(document).ready(function(){
+
+        var types = ['foodie','museums','landmark','dancing','escape_rooms','wine bars','dogs','scenic','historic','kids','shopping'];
+        var html = '';
+
+        $.each(types, function( index, value ) {
+            var name = value.replace(/_/g, " ");
+            html += '<div><label><input type="checkbox" class="types" value="'+ value +'" />'+ capitalizeFirstLetter(name) +'</label></div>';
+        });
+
+        $('#type_holder').html(html);
+    });
+
+    // Helper function to capitalize first letter of a string
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    // Variables for Google Map
+    var map;
+    var infowindow;
+    var autocomplete;
+    var countryRestrict = {'country': 'in'};
+    var selectedTypes = [];
 
 
+    // Initialize the map
+    function initialize()
+    {
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById('address')), {
+            types: ['(regions)'],
+           // componentRestrictions: countryRestrict
+        });
 
-              {#------------------------- MAP BELOW ------------------------------#}
+        var pyrmont = new google.maps.LatLng(52.5666644, 4.7333304);
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: pyrmont,
+            zoom: 12
+        });
+
+        infoWindow = new google.maps.InfoWindow;
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            var geocoder = new google.maps.Geocoder;
+
+                geocoder.geocode({'location':pos}, function(results,status){
+                    if (status == 'OK') {
+                        if (results[0]){
+                            console.log(results[0].formatted_address);
+                            $('#address').val(results[0].formatted_address);
+                        } else { 
+                            console.log("No results"); 
+                        }
+                    } else {
+                        console.log("Geocoder failed: " + status);
+                    }
+                })
 
 
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('You are here.');
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
 
 
+    }
 
- 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </script>
+        
+{% endblock content %}
 
-    <input type="text" id="query" placeholder="Search for something...">
-    <button id="search">Search</button>
 
-    <p><a href="" id="url" target="_blank">Click for result!</a></p> {#<!-- new page with map results -->#}        
-              
-{% endblock %}
 {#
 <!-- api k AIzaSyBJT97lQtK95HI3ze4JtQJOH81foWZ5Uac -->
 #}
