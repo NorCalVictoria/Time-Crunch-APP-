@@ -12,10 +12,14 @@ from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 from key import key
+from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///timeCrunch'
+
+################################################################################
+### LOGIN MANAGER ###
 
 Bootstrap(app)
 login_manager = LoginManager()
@@ -25,12 +29,10 @@ login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
-
-
-@app.route('/')
-def homepage():
-    return render_template('homepage.html')
+    print(user_id)
+    print(type(user_id))
+    print(User.query.get(user_id))
+    return User.query.get(user_id)
 
 
 class LoginForm(FlaskForm):
@@ -48,6 +50,14 @@ class RegisterForm(FlaskForm):
                            validators=[InputRequired(), Length(min=4, max=100)])
     password = PasswordField('password',
                              validators=[InputRequired(), Length(min=2, max=100)])
+
+
+################################################################################
+### ROUTES ###
+
+@app.route('/')
+def homepage():
+    return render_template('homepage.html')
 
 
 @app.route('/signUp', methods=['GET', 'POST'])
@@ -83,20 +93,24 @@ def login():
     if form.validate_on_submit():# when form submits enter block
         user = User.query.filter_by(username=form.username.data).first()
         if user:
-            hashed_password = generate_password_hash(form.password.data,
-                                                     method='sha256')
-            if check_password_hash(user.password, hashed_password):
+            if check_password_hash(user.password, form.password.data):
+                
+                session['user_id'] = user.id
+                
                 login_user(user, remember=form.remember.data)
-        return redirect(url_for('settings'))
+        
+                return redirect(url_for('settings'))
+            else:
+                flash("password incorrect")
+                return redirect('/login')
+        else:
+                flash("username not found")
+                return redirect('/login')
     else:
         flash(f"Form has errors: {form.errors}")
         return redirect('/login')
     #return render_template('login.html', form=form)
 
-@app.route('/settings')
-# @login_required
-def settings():
-    return render_template('settings.html', name=current_user.username)
 
 @app.route('/logout')
 # @login_required
@@ -105,6 +119,14 @@ def logout():
     return redirect(url_for('homepage'))
 
 
+@app.route('/settings')
+# @login_required
+def settings():
+    print(current_user)
+    print(dir(current_user))
+    print(current_user.is_authenticated)
+    return render_template('settings.html', name=current_user.username)
+
 
 ##########  MAP SEARCH ##############
 
@@ -112,9 +134,6 @@ def logout():
 search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 details_url = "https://maps.googleapis.com/maps/api/place/details/json"
 
-@app.route("/", methods=["GET"])
-def retreive():
-    return render_template('layout.html') 
 
 @app.route("/sendRequest/<string:query>")
 def results(query):
@@ -130,124 +149,6 @@ def results(query):
 
     url = details_json["result"]["url"]
     return jsonify({'result': url})
-#                         #Routing#
-# @app.route('/')
-# def homepage():
-#     """Homepage"""    #Landing Page ?
-
-#     return render_template('homepage.html')
-
-
-# @app.route('/search', methods=['GET'])
-# def search_form():
-#     return render_template('search.html')
-
-# @app.route('/search', methods=['POST'])
-# def place_search():
-
-#     return render_template('search.html')
-
-# @app.route('/login', methods=['GET', 'POST'])
-# def route_login():
-#     if request.method == 'POST':
-#         email = request.form.get('email')
-#         password = request.form.get('password')
- 
-#         user = User.query(email=email).first()
- 
-#         if not user:
-#             flash('No such user')
-#             return redirect(url_for('/homepage'))
-
-# @app.route('/login', methods=['GET'])
-# def login_form():
-#     """Show login form."""
-#     return render_template("login.html")
-
-# @app.route('/login', methods=['POST'])
-
-# def login_process():
-
-#     """get login info from form"""
-#      # Get form variables
-#     #return render_template('/homepage')
-#     email = request.form('email')
-
-#     password = request.form('password')
-
-
-#     user = User.query(User.email==email).first()
-
-#     # if not user:
-
-#     #     flash("No such user")
-
-#     #     return redirect("/homepage")
-
-#     #     if user.password != password:
-
-#     #         flash("Incorrect password")
-
-#     #         return redirect("/signUp")
-
-#     #     session["user_id"] = user.id
-
-
-#     #     flash("You are now logged in")
-#     #     return render_template('search.html') 
-#     #     # return redirect("/WHAT HERE???/{}".format(user.user_id))
-#     # return render_template('login.html') #change this later 
-
-  
-
-#     # flash('wrong password')
-
-#     # return redirect('/login')
-
-     
-# @app.route('/logoff')
-# def logout():
-#     """Log out."""
-
-#     del session['user_id']
-#     flash('You have logged out')
-
-#     return redirect('/')
-
-
-
-#                       ### NEW USER ###
-
-# @app.route('/signUp', methods=['GET'])
-# def signup_form():
-#     """user signup form"""
-
-#     return render_template('signUp.html')
-
-
-# @app.route('/signUp', methods=['POST']) 
-# def signup_process():
-#     """Process signup"""
-
-#                                     ### USER INPUT ###
-#     fname = request.form['fname']
-#     lname = request.form['lname']
-#     email = request.form["email"]
-#     password = request.form["password"]
-    
-    
-#     new_user = User(fname=fname, lname=lname, password=password, email=email)
-
-#                                    #add_new_user#
-#     db.session.add(new_user)
-#     db.session.commit()
-
-#     session['user_id'] = new_user.user_id
-#     session['fname'] = new_user.fname
-
-#     #return redirect('/settings')
-
-
 
 
 #                                     #Profile Upload#
@@ -268,5 +169,6 @@ if __name__ == '__main__':
     # error messages and reload
     # our web app if we change the code.
     connect_to_db(app)
-    app.run(debug=True)
+    app.debug = True
+    toolbar = DebugToolbarExtension(app)
     app.run(host="0.0.0.0")
