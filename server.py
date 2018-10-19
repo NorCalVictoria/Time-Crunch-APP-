@@ -117,7 +117,7 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('homepage'))
-
+ 
 
 @app.route('/settings')
 # @login_required
