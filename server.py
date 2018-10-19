@@ -132,6 +132,7 @@ def settings():
 
 
 search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+
 details_url = "https://maps.googleapis.com/maps/api/place/details/json"
 
 
@@ -141,14 +142,22 @@ def results(query):
     search_req = request.get(search_url, params=search_payload)
     search_json = search_req.json()
 
+
+
+
+
     place_id = search_json["results"][0]["place_id"]
+
+
 
     details_payload = {"key": key, "placeid": place_id}
     details_resp = request.get(details_url, params=details_payload)
     details_json = details_resp.json()
 
-    url = details_json["result"]["url"]
-    return jsonify({'result': url})
+     
+
+    url = details_json["result"]["url"] # <--- 
+    return jsonify({'result': url})     #<---
 
 
 #                                     #Profile Upload#
