@@ -14,6 +14,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from key import key
 from flask_debugtoolbar import DebugToolbarExtension
 
+from PIL import Image
+from flaskblog.forms import  UpdateAccountForm
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///timeCrunch'
@@ -102,10 +105,10 @@ def login():
                 return redirect(url_for('settings'))
             else:
                 flash("password incorrect")
-                return redirect('/login')
+                return redirect('/settings')
         else:
                 flash("username not found")
-                return redirect('/login')
+                return redirect('/settings')
     else:
         flash(f"Form has errors: {form.errors}")
         return redirect('/login')
@@ -127,6 +130,43 @@ def settings():
     print(current_user.is_authenticated)
     return render_template('settings.html', name=current_user.username)
 
+
+
+#------------------------ PROFILE IMAGE ------------------------------#
+
+# def save_picture(form_picture):
+#     random_hex = secrets.token_hex(8)
+#     _, f_ext = os.path.splitext(form_picture.filename)
+#     picture_fn = random_hex + f_ext
+#     picture_path = os.path.join(app.root_path, 'static/profile_all', picture_fn)
+
+#     output_size = (125, 125)
+#     i = Image.open(form_picture)
+#     i.thumbnail(output_size)
+#     i.save(picture_path)
+
+#     return picture_fn
+
+
+# @app.route("/profile", methods=['GET', 'POST'])
+# @login_required
+# def profile():
+#     form = UpdateProfileForm()
+#     if form.validate_on_submit():
+#         if form.picture.data:
+#             picture_file = save_picture(form.picture.data)
+#             current_user.image_file = picture_file
+#         current_user.username = form.username.data
+#         current_user.email = form.email.data
+#         db.session.commit()
+#         flash('Your account has been updated!', 'success')
+#         return redirect(url_for('profile'))
+#     elif request.method == 'GET':
+#         form.username.data = current_user.username
+#         form.email.data = current_user.email
+#     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+#     return render_template('profile.html', title='Profile',
+#                            image_file=image_file, form=form)
 
 ##########  MAP SEARCH ##############
 
@@ -159,19 +199,6 @@ def results(query):
     url = details_json["result"]["url"] # <--- 
     return jsonify({'result': url})     #<---
 
-
-#                                     #Profile Upload#
-# # @app.route('/profile_img', methods=['GET', 'POST'])
-# # def upload():
-
-# #     path = str(user_id) + ".jpg"
-# #     user_id = session.get('user_id')
-# #     if request.method == 'POST' and 'photo' in request.files:
-# #         request.files['photo'].filename = path
-# #         filename = photos.save(request.files['photo'])
-# #         user = User.query.get(user_id)
-# #         user.photo = '/' + app.config['UPLOADED_PHOTOS_DEST'] + '/' + path
-# #         db.session.commit()
 
 if __name__ == '__main__':
 
