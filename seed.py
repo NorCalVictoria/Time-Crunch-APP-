@@ -10,16 +10,16 @@ def seed():
     User_Hobby.query.delete()
 
     karen = User(username='kare', password='12345600', fname='char',
-                 lname='kep', email='karen@gmail.com')
+                 lname='kep', email='karen@gmail.com', image_file='defa_profile.png')
 
     sasha = User(username='lensmith', password='lmnop000',
-                 fname='mel', lname='till', email='tepp@gmail.com')
+                 fname='mel', lname='till', email='tepp@gmail.com', image_file='defa_profile.png')
 
     kris = User(username='tek', password='7654300', fname='wally',
-                lname='baker', email='krisstina@gmail.com')
+                lname='baker', email='krisstina@gmail.com', image_file='defa_profile.png')
 
     tom = User(username='gary', password='98765000', fname='cara',
-               lname='walker', email='sooner@gmail.com')
+               lname='walker', email='sooner@gmail.com', image_file='defa_profile.png')
 
     hobby1 = Hobby(name='foodie')
     hobby2 = Hobby(name='museums')

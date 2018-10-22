@@ -3,7 +3,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
-Search
+Map Settings
 {% endblock title %}
 
 
@@ -129,7 +129,7 @@ Search
 
 
             infoWindow.setPosition(pos);
-            infoWindow.setContent('You are here.');
+            infoWindow.setContent('YOU ARE HERE'); {#<!--can i add current user name ? #}
             infoWindow.open(map);
             map.setCenter(pos);
           }, function() {

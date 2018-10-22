@@ -19,7 +19,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100), nullable=False)
     fname = db.Column(db.String(80), nullable=True)
     lname = db.Column(db.String(80), nullable=True)
-
+    image_file = db.Column(db.String(20), nullable=False, default='defa_profile.png')
 
     hobbies = db.relationship('Hobby',secondary='user_hobbies',backref='users')
 

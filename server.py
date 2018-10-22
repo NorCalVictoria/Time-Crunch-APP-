@@ -8,21 +8,20 @@ import jinja2
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 from key import key
 from flask_debugtoolbar import DebugToolbarExtension
 
 from PIL import Image
-from flaskblog.forms import  UpdateAccountForm
+from flask_wtf.file import FileField, FileAllowed
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///timeCrunch'
 
-################################################################################
-### LOGIN MANAGER ###
+#--------------------------------- LOGIN MANAGER -------------------------------
 
 Bootstrap(app)
 login_manager = LoginManager()
@@ -55,8 +54,43 @@ class RegisterForm(FlaskForm):
                              validators=[InputRequired(), Length(min=2, max=100)])
 
 
-################################################################################
-### ROUTES ###
+
+class UpdateProfileForm(FlaskForm):
+    email = StringField('email',
+                        validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
+    username = StringField('username',
+                           validators=[InputRequired(), Length(min=4, max=100)])
+    submit = SubmitField('Update')
+
+    picture = FileField('Update Profile Picture', validators=[FileAllowed('png','jpg')])
+                    ####### to profile.html  form-group ########
+
+
+
+    def save_picture(form_picture):
+      random_hex = secrets.token_hex(8)
+      _, f_ext = os.path.splitext(form_picture.filename)
+      picture_fn = random_hex + f_ext
+      picture_path = os.path.join(app.root_path, 'static/profile_all', picture_fn)
+
+      output_size = (125, 125)
+      i = Image.open(form_picture)
+      i.thumbnail(output_size)
+      i.save(picture_path)
+
+      return picture_fn
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('That username is taken. Please choose a different one')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.date).first()
+        if user:
+            raise ValidationError('Email is taken . Use a different email')
+
+#----------------------------------- ROUTES ------------------------------------
 
 @app.route('/')
 def homepage():
@@ -88,8 +122,8 @@ def signUp():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm(request.form)
-    
+    form = LoginForm(request.form) # FORM definition
+
     if request.method == 'GET':
         return render_template('login.html', form=form)
 
@@ -97,11 +131,11 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
-                
+
                 session['user_id'] = user.id
-                
+
                 login_user(user, remember=form.remember.data)
-        
+
                 return redirect(url_for('settings'))
             else:
                 flash("password incorrect")
@@ -112,7 +146,7 @@ def login():
     else:
         flash(f"Form has errors: {form.errors}")
         return redirect('/login')
-    #return render_template('login.html', form=form)
+     #return render_template('login.html', form=form)
 
 
 @app.route('/logout')
@@ -120,7 +154,7 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('homepage'))
- 
+
 
 @app.route('/settings')
 # @login_required
@@ -132,43 +166,33 @@ def settings():
 
 
 
-#------------------------ PROFILE IMAGE ------------------------------#
-
-# def save_picture(form_picture):
-#     random_hex = secrets.token_hex(8)
-#     _, f_ext = os.path.splitext(form_picture.filename)
-#     picture_fn = random_hex + f_ext
-#     picture_path = os.path.join(app.root_path, 'static/profile_all', picture_fn)
-
-#     output_size = (125, 125)
-#     i = Image.open(form_picture)
-#     i.thumbnail(output_size)
-#     i.save(picture_path)
-
-#     return picture_fn
+#------------------------------------- PROFILE IMAGE ---------------------------
 
 
-# @app.route("/profile", methods=['GET', 'POST'])
-# @login_required
-# def profile():
-#     form = UpdateProfileForm()
-#     if form.validate_on_submit():
-#         if form.picture.data:
-#             picture_file = save_picture(form.picture.data)
-#             current_user.image_file = picture_file
-#         current_user.username = form.username.data
-#         current_user.email = form.email.data
-#         db.session.commit()
-#         flash('Your account has been updated!', 'success')
-#         return redirect(url_for('profile'))
-#     elif request.method == 'GET':
-#         form.username.data = current_user.username
-#         form.email.data = current_user.email
-#     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-#     return render_template('profile.html', title='Profile',
-#                            image_file=image_file, form=form)
 
-##########  MAP SEARCH ##############
+
+
+@app.route("/profile", methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = UpdateProfileForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account has been updated!')
+        return redirect(url_for('profile'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    image_file = url_for('static', filename='profile_all/' + current_user.image_file)
+    return render_template('profile.html', title='Profile',
+                           image_file=image_file, form=form)
+
+#------------------------------------------- MAP SEARCH ------------------------
 
 
 search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
