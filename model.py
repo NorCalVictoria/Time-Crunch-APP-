@@ -1,8 +1,14 @@
 """time crunch database model for app"""
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-
+from flask_wtf import FlaskForm
 from datetime import datetime
+
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import InputRequired, Email, Length
+
+from flask_wtf.file import FileField, FileAllowed
+
 db = SQLAlchemy()
 
 #----------------------------------------------------------------------#
@@ -57,6 +63,36 @@ class User_Hobby(db.Model):
 
     user = db.relationship('User')
     hobby = db.relationship('Hobby')
+
+class LoginForm(FlaskForm):
+    password = PasswordField('password',
+                             validators=[InputRequired(), Length(min=2, max=80)])
+    username = StringField('username',
+                           validators=[InputRequired(), Length(min=2, max=40)])
+    remember = BooleanField('remember me')
+
+
+class RegisterForm(FlaskForm):
+    email = StringField('email',
+                        validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
+    username = StringField('username',
+                           validators=[InputRequired(), Length(min=4, max=100)])
+    password = PasswordField('password',
+                             validators=[InputRequired(), Length(min=2, max=100)])
+
+
+
+class UpdateProfileForm(FlaskForm):
+    email = StringField('email',
+                        validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
+    username = StringField('username',
+                           validators=[InputRequired(), Length(min=4, max=100)])
+    submit = SubmitField('Update')
+
+    picture = FileField('Update Profile Picture', validators=[FileAllowed('png', 'jpeg')])   
+
+
+    
 #-----------------------------------------------------------------------#
 # Helper functions #
 

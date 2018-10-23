@@ -1,5 +1,5 @@
 """Greeting Flask app."""
-from model import User, Hobby, User_Hobby, db, connect_to_db
+from model import User, Hobby, User_Hobby, db, connect_to_db, LoginForm, RegisterForm, UpdateProfileForm
 from random import choice
 from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -7,16 +7,12 @@ from io import StringIO
 import jinja2
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import InputRequired, Email, Length
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from key import key
 from flask_debugtoolbar import DebugToolbarExtension
 
 from PIL import Image
-from flask_wtf.file import FileField, FileAllowed
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///timeCrunch'
@@ -37,41 +33,27 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-class LoginForm(FlaskForm):
-    password = PasswordField('password',
-                             validators=[InputRequired(), Length(min=2, max=80)])
-    username = StringField('username',
-                           validators=[InputRequired(), Length(min=2, max=40)])
-    remember = BooleanField('remember me')
 
+                 ####### to profile.html  form-group ########
 
-class RegisterForm(FlaskForm):
-    email = StringField('email',
-                        validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
-    username = StringField('username',
-                           validators=[InputRequired(), Length(min=4, max=100)])
-    password = PasswordField('password',
-                             validators=[InputRequired(), Length(min=2, max=100)])
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('That username is taken.')
 
+    def validate_email(self, email):
+        if email.data != current_user.email:
 
-
-class UpdateProfileForm(FlaskForm):
-    email = StringField('email',
-                        validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
-    username = StringField('username',
-                           validators=[InputRequired(), Length(min=4, max=100)])
-    submit = SubmitField('Update')
-
-    picture = FileField('Update Profile Picture', validators=[FileAllowed('png', 'jpeg')])
-                    ####### to profile.html  form-group ########
-
-
+            user = User.query.filter_by(email=email.date).first()
+            if user:
+                raise ValidationError('Email is taken . Use a different email')
 
     def save_picture(form_picture):
       random_hex = secrets.token_hex(8)
       _, f_ext = os.path.splitext(form_picture.filename)
       picture_fn = random_hex + f_ext
-      picture_path = os.path.join(app.root_path, 'static/profile_all', picture_fn)
+      picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
 
       output_size = (125, 125)
       i = Image.open(form_picture)
@@ -80,17 +62,42 @@ class UpdateProfileForm(FlaskForm):
 
       return picture_fn
 
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user:
-            raise ValidationError('That username is taken. Please choose a different one')
-
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.date).first()
-        if user:
-            raise ValidationError('Email is taken . Use a different email')
 
 #----------------------------------- ROUTES ------------------------------------
+
+
+
+#------------------------------------- PROFILE IMAGE ---------------------------x
+@app.route("/profile", methods=['GET', 'POST'])
+@login_required
+def profile():
+    print('Profile Works')                          
+    form = UpdateProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        print('v on submit Works')
+        db.session.commit()
+
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file
+        current_user.username = form.username.data 
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account has been updated!')
+        return redirect(url_for('profile'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    else:
+        print('Else Works')
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+
+    print(current_user)
+    return render_template('profile.html', title='profile',
+                           image_file=image_file, form=form)
+
 
 @app.route('/')
 def homepage():
@@ -156,7 +163,7 @@ def logout():
     return redirect(url_for('homepage'))
 
 
-@app.route('/settings')
+@app.route('/settings')   #----- MAP SEARCH ------#
 # @login_required
 def settings():
     print(current_user)
@@ -166,36 +173,7 @@ def settings():
 
 
 
-#------------------------------------- PROFILE IMAGE ---------------------------
 
-
-
-
-
-@app.route("/profile", methods=['GET', 'POST'])
-@login_required
-def profile():
-    print('Pofile Works')                          
-    form = UpdateProfileForm()
-    if form.validate_on_submit():
-        print('v on submit Works')
-
-        if form.picture.data:
-            picture_file = save_picture(form.picture.data)
-            current_user.image_file = picture_file
-        current_user.username = form.username.data
-        current_user.email = form.email.data
-        db.session.commit()
-        flash('Your account has been updated!')
-        return redirect(url_for('profile'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.email.data = current_user.email
-    else:
-        print('Else Works')
-    image_file = url_for('static', filename='profile_all/' + current_user.image_file)
-    return render_template('profile.html', title='Profile',
-                           image_file=image_file, form=form)
 
 #------------------------------------------- MAP SEARCH ------------------------
 

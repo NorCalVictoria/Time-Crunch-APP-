@@ -2,6 +2,10 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
+{% block title %}
+profile
+{% endblock %}
+
 <br>
 <br>
 <br>
@@ -70,11 +74,10 @@
     </div>
 
 
-
-
-
-
 {% endblock %}   
+
+
+{% include 'flashed.html' %}
 
 
 
