@@ -62,7 +62,7 @@ class UpdateProfileForm(FlaskForm):
                            validators=[InputRequired(), Length(min=4, max=100)])
     submit = SubmitField('Update')
 
-    picture = FileField('Update Profile Picture', validators=[FileAllowed('png','jpg')])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed('png', 'jpeg')])
                     ####### to profile.html  form-group ########
 
 
@@ -175,8 +175,11 @@ def settings():
 @app.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile():
+    print('Pofile Works')                          
     form = UpdateProfileForm()
     if form.validate_on_submit():
+        print('v on submit Works')
+
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
@@ -188,6 +191,8 @@ def profile():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
+    else:
+        print('Else Works')
     image_file = url_for('static', filename='profile_all/' + current_user.image_file)
     return render_template('profile.html', title='Profile',
                            image_file=image_file, form=form)
@@ -218,10 +223,10 @@ def results(query):
     details_resp = request.get(details_url, params=details_payload)
     details_json = details_resp.json()
 
-     
 
-    url = details_json["result"]["url"] # <--- 
-    return jsonify({'result': url})     #<---
+
+    url = details_json["result"]["url"]  # <---
+    return jsonify({'result': url})     # <---
 
 
 if __name__ == '__main__':

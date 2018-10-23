@@ -64,6 +64,7 @@ class User_Hobby(db.Model):
 def connect_to_db(app, db_uri='postgresql:///timeCrunch'):
 
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    app.config['SQLALCHEMY_ECHO'] = True
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)

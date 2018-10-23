@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% block content %}
 <br>
 <br>
@@ -22,6 +24,9 @@
             {#----------------------------------------- USERNAME ---------------------------#}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Profile Info</legend>
+                
+
+                {#
                 <div class="form-group">
                     {{ form.username.label(class="form-control-label") }}
 
@@ -36,11 +41,20 @@
                         {{ form.username(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+                #}
+
+
                 {#--------------------------------------- EMAIL ---------------------------------#}
+               
+                {#
                 <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}
-                    
+
+                    {{ form.email(class="form-control form-control-lg") }}
                 </div>
+                #}
+
+
                 {# ------------------------------------- PICTURE --------------------------------- #}
 
                 <div class="form-group">
