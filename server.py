@@ -183,7 +183,11 @@ search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 details_url = "https://maps.googleapis.com/maps/api/place/details/json"
 
 
-@app.route("/sendRequest/<string:query>")
+@app.route("/", methods=["GET"])  #google api not restful
+def retreive():
+    return render_template('settings.html')
+
+@app.route("/sendRequest/<string:query>") #takes in the query  RECEIVE RECEIVE RECEIVE
 def results(query):
     search_payload = {"key": key, "query": query}
     search_req = request.get(search_url, params=search_payload)
@@ -215,3 +219,8 @@ if __name__ == '__main__':
     app.debug = True
     toolbar = DebugToolbarExtension(app)
     app.run(host="0.0.0.0")
+
+
+
+
+
