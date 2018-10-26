@@ -31,17 +31,8 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         """helpful representation"""
-        return "<User user_id=%s email=%s>" % (self.id, self.email) #MORE FORMATTING NEEDED
+        return "<User user_id=%s email=%s>" % (self.id, self.email)   # MORE FORMATTING NEEDED
 
-# class Post(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     title = db.Column(db.String(100), nullable=False)
-#     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-#     content = db.Column(db.Text, nullable=False)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-#     def __repr__(self):
-#         return f"Post('{self.title}', '{self.date_posted}')"
 
 
 class Hobby(db.Model):
@@ -92,10 +83,9 @@ class UpdateProfileForm(FlaskForm):
     picture = FileField('Update Profile Picture', validators=[FileAllowed('png', 'jpeg')])   
 
 
-    
+
 #-----------------------------------------------------------------------#
 # Helper functions #
-
 
 def connect_to_db(app, db_uri='postgresql:///timeCrunch'):
 

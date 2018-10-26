@@ -11,7 +11,7 @@ from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash, check_password_hash
 from key import key
 from flask_debugtoolbar import DebugToolbarExtension
-
+#import imghdr
 from PIL import Image
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretKey'
@@ -104,6 +104,9 @@ def homepage():
     return render_template('homepage.html')
 
 
+
+
+
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
 
@@ -181,31 +184,38 @@ def settings():
 search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 
 details_url = "https://maps.googleapis.com/maps/api/place/details/json"
+#https://maps.googleapis.com/maps/api/place/photo?parameters # for place photo 
+                                                            #instead of details
 
 
 @app.route("/", methods=["GET"])  #google api not restful
 def retreive():
     return render_template('settings.html')
 
-@app.route("/sendRequest/<string:query>") #takes in the query  RECEIVE RECEIVE RECEIVE
+
+@app.route("/sendRequest/<string:query>")#takes in the query  RECEIVE RECEIVE RECEIVE
 def results(query):
     search_payload = {"key": key, "query": query}
     search_req = request.get(search_url, params=search_payload)
     search_json = search_req.json()
 
 
-
-
-
     place_id = search_json["results"][0]["place_id"]
+    #photo_id = search_json["results"][0]["photos"][0]["photo_reference"] #for photo json
+                                                                            #instead of details
 
-
-
+    #photo_payload = {"key" : key, "maxwidth" : 500, "maxwidth" : 500, "photoreference" : photo_id}  #for photo id 
+    #photo_request = requests.get(photos_url, params=photo_payload)                                                                                             #instead of details                             
     details_payload = {"key": key, "placeid": place_id}
     details_resp = request.get(details_url, params=details_payload)
     details_json = details_resp.json()
 
+    #photo_type = imagehdr.what("", photo_request.content)
+    #photo_name = "static/" + query + "." + photo_type
 
+    #with open(photo_name), "wb") as photo:
+    #photo.write(photo_request.content)
+    #return '<img src='+ photo_name + '>'
 
     url = details_json["result"]["url"]  # <---
     return jsonify({'result': url})     # <---
@@ -219,8 +229,3 @@ if __name__ == '__main__':
     app.debug = True
     toolbar = DebugToolbarExtension(app)
     app.run(host="0.0.0.0")
-
-
-
-
-
