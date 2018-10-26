@@ -5,6 +5,7 @@ from flask import Flask, request, redirect, render_template, url_for, flash, jso
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from io import StringIO
 import jinja2
+import requests
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 
@@ -188,17 +189,24 @@ details_url = "https://maps.googleapis.com/maps/api/place/details/json"
                                                             #instead of details
 
 
-@app.route("/", methods=["GET"])  #google api not restful
-def retreive():
-    return render_template('settings.html')
+# @app.route("/", methods=["GET"])  #google api not restful
+# def retreive():
+#     return render_template('settings.html')
 
 
-@app.route("/sendRequest/<string:query>")#takes in the query  RECEIVE RECEIVE RECEIVE
+@app.route("/sendRequest/<string:query>", methods=['POST'])#takes in the query  RECEIVE RECEIVE RECEIVE
+# @app.route('/settings', methods=['POST'])
 def results(query):
     search_payload = {"key": key, "query": query}
-    search_req = request.get(search_url, params=search_payload)
+    search_req = requests.get(search_url, params=search_payload)
+    
     search_json = search_req.json()
 
+    print('GOT HERE', query)
+    print('SEARCH_JSON', search_json)
+
+    if (len(search_json["results"]) == 0): # In case there are no results
+        return
 
     place_id = search_json["results"][0]["place_id"]
     #photo_id = search_json["results"][0]["photos"][0]["photo_reference"] #for photo json
@@ -207,7 +215,7 @@ def results(query):
     #photo_payload = {"key" : key, "maxwidth" : 500, "maxwidth" : 500, "photoreference" : photo_id}  #for photo id 
     #photo_request = requests.get(photos_url, params=photo_payload)                                                                                             #instead of details                             
     details_payload = {"key": key, "placeid": place_id}
-    details_resp = request.get(details_url, params=details_payload)
+    details_resp = requests.get(details_url, params=details_payload)
     details_json = details_resp.json()
 
     #photo_type = imagehdr.what("", photo_request.content)
@@ -219,6 +227,7 @@ def results(query):
 
     url = details_json["result"]["url"]  # <---
     return jsonify({'result': url})     # <---
+    # instead of returning jsonify, redirect to /settings
 
 
 if __name__ == '__main__':
