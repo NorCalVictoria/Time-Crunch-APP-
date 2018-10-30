@@ -3,7 +3,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}  settings  {% endblock title %}
-
+ 
 
 {% block content %}
 
@@ -15,29 +15,30 @@
 
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDE5BClvl-Ttz9SnoNxuEqgzkBeujoUGjI&libraries=places&callback=renderMap
-" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDE5BClvl-Ttz9SnoNxuEqgzkBeujoUGjI&libraries=places&callback=renderMap  {# 404 error maybe ??? #}
+ " async defer></script>
 
 <script>
     
     // Makes checkboxes for each hobby
-{#    $(document).ready(function(){
-        //var searchReq =$.get("/sendRequest/" + $("#query").val());  <---
-        let types = ['foodie','museums','landmark','dancing','escape_rooms','wine bars','dogs','scenic','historic','kids','shopping'];
-        let html = '';
+{#   
+    // $(document).ready(function(){
+    //     //var searchReq =$.get("/sendRequest/" + $("#query").val());  <---
+    //     let types = ['foodie','museums','landmark','dancing','escape_rooms','wine bars','dogs','scenic','historic','kids','shopping'];
+    //     let html = '';
 
-        $.each(types, function( index, value ) {
-            let name = value.replace(/_/g, " ");
-            html += '<div><label><input type="checkbox" class="types" value="'+ value +'" />'+ capitalizeFirstLetter(name) +'</label></div>';
-        });
+    //     $.each(types, function( index, value ) {
+    //         let name = value.replace(/_/g, " ");
+    //         html += '<div><label><input type="checkbox" class="types" value="'+ value +'" />'+ capitalizeFirstLetter(name) +'</label></div>';
+    //     });
 
-        $('#type_holder').html(html);
-    });
+    //     $('#type_holder').html(html);
+    // });
 
-    // Helper function to capitalize first letter of a string
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+    // // Helper function to capitalize first letter of a string
+    // function capitalizeFirstLetter(string) {
+    //     return string.charAt(0).toUpperCase() + string.slice(1);
+    // }
 #}
     // Variables for Google Map
     let map;
@@ -47,18 +48,15 @@
     let selectedTypes = [];
 
 
+ {# _________________Logic to show inital map with geolocation _________________#}
     // Initialize the map
     function renderMap()
     {
-        autocomplete = new google.maps.places.Autocomplete((document.getElementById('address')), {
-            types: ['(regions)'],
-           // componentRestrictions: countryRestrict
-        });
-
-        let pyrmont = new google.maps.LatLng(52.5666644, 4.7333304);
-
+        // autocomplete = new google.maps.places.Autocomplete((document.getElementById('address')), {
+        //     types: ['(regions)'],
+        //    // componentRestrictions: countryRestrict
+        // });
         map = new google.maps.Map(document.getElementById('map'), {
-            center: pyrmont,
             zoom: 12
         });
 
@@ -77,7 +75,7 @@
                     if (status == 'OK') {
                         if (results[0]){
                             console.log(results[0].formatted_address);
-                            $('#address').val(results[0].formatted_address);
+                            // $('#address').val(results[0].formatted_address);
                         } else { 
                             console.log("No results"); 
                         }
@@ -87,7 +85,7 @@
                 })
 
 
-            {#infoWindow.setPosition(pos);#}
+            infoWindow.setPosition(pos);
             infoWindow.setContent('YOU ARE HERE'); {#<!--can i add current user name ? #}
             infoWindow.open(map);
             map.setCenter(pos); 
@@ -113,17 +111,18 @@
 
 
  {#--------------------------alternate script ----------------#}
-   
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-  
+{#
+
+<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
+    <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+#}
   
     <input type="text" id="query" placeholder="Search for hobby...">     {#  search box for user  #}
     <button id="search">Search</button>
 
-    <p><a href="" id="url" target="_blank">Results!</a></p>  
-    {# <div id="image"></div>   <!-- for photo -->#}
+    {# <p><a href="" id="url" target="_blank">Results!</a></p>  #}
+     <div id="image"></div>   <!-- for photo -->
 {#------------------alternate script--------------------------#}
 
 
@@ -132,9 +131,44 @@
     <div id="map" style="width:900px; height:600px;"></div>
 </div>
 
-<div style="float: left; width: 400;">
+<script type="text/javascript">
+
+$("#search").click(function() { // click event for search button
+    let term = $("#query").val();
+    // query the google places API using our search term
+    let lat = map.getCenter().lat();
+    let lng = map.getCenter().lng();
+
+    let data = {
+        location: {lat, lng},
+        radius: 50,
+        keyword: term
+    };
+
+    $.get('/sendRequest', data, processData);
+
+});
+   
+
+function processData(data) {
+    console.log(data);
+    // Eventually, we should add markers to the map.    
+}
+    // This URL is where you server should send its request.
+    // let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+    // let urlStr = url + 'key=' + key + 
+    //              '&location=' + lat + ',' + lng + 
+    //              "&radius=50" + 
+    //              "&keyword=" + term
+  
+
+
+</script>
+
+{#
+<!-- <div style="float: left; width: 400;">
     <form name="frm_map" id="frm_map">
- {#      <table>
+       <table>
             <tr>
                 <th>Address</th>
                 <td>
@@ -151,7 +185,7 @@
                 <th>Types</th>
                 <td>
                     <div id="type_holder" style="height: 200px; overflow-y: scroll;">
-                        <!-- Dynamic Content -->    
+                        Dynamic Content    
                     </div>
                 </td>
             </tr>
@@ -166,13 +200,11 @@
             </tr>
         </table>
     </form>
-</div>
-
-</div>  <!-- container end -->
-
+</div> -->
 
 #}
 
+</div>  <!-- container end -->
         
 {% endblock content %}
 

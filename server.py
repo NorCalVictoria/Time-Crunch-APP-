@@ -35,7 +35,7 @@ def load_user(user_id):
 
 
 
-                 ####### to profile.html  form-group ########
+                 #----------- to profile.html  form-group ----------#
 
     def validate_username(self, username):
         if username.data != current_user.username:
@@ -184,7 +184,7 @@ def settings():
 
 search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 
-details_url = "https://maps.googleapis.com/maps/api/place/details/json"
+#details_url = "https://maps.googleapis.com/maps/api/place/details/json"
 #https://maps.googleapis.com/maps/api/place/photo?parameters # for place photo 
                                                             #instead of details
 
@@ -199,7 +199,7 @@ details_url = "https://maps.googleapis.com/maps/api/place/details/json"
 def results(query):
     search_payload = {"key": key, "query": query}
     search_req = requests.get(search_url, params=search_payload)
-    
+
     search_json = search_req.json()
 
     print('GOT HERE', query)
@@ -212,8 +212,8 @@ def results(query):
     #photo_id = search_json["results"][0]["photos"][0]["photo_reference"] #for photo json
                                                                             #instead of details
 
-    #photo_payload = {"key" : key, "maxwidth" : 500, "maxwidth" : 500, "photoreference" : photo_id}  #for photo id 
-    #photo_request = requests.get(photos_url, params=photo_payload)                                                                                             #instead of details                             
+    #photo_payload = {"key" : key, "maxwidth" : 500, "maxwidth" : 500, "photoreference" : photo_id}  #for photo id
+    #photo_request = requests.get(photos_url, params=photo_payload)                               #instead of details
     details_payload = {"key": key, "placeid": place_id}
     details_resp = requests.get(details_url, params=details_payload)
     details_json = details_resp.json()
