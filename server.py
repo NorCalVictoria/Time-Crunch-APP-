@@ -184,55 +184,61 @@ def settings():
 
 search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 
-#details_url = "https://maps.googleapis.com/maps/api/place/details/json"
-#https://maps.googleapis.com/maps/api/place/photo?parameters # for place photo 
-                                                            #instead of details
 
 
-# @app.route("/", methods=["GET"])  #google api not restful
-# def retreive():
-#     return render_template('settings.html')
 
 
-@app.route("/sendRequest/<string:query>", methods=['POST'])#takes in the query  RECEIVE RECEIVE RECEIVE
+@app.route("/sendRequest")#takes in the query  RECEIVE RECEIVE RECEIVE
 # @app.route('/settings', methods=['POST'])
-def results(query):
-    search_payload = {"key": key, "query": query}
-    search_req = requests.get(search_url, params=search_payload)
-                                            #^ was params
-    search_json = search_req.json()
+def results():
+    lat = request.args.get('latitude')
+    lng = request.args.get('longitude')
+    radius = request.args.get('radius')
+    keyword = request.args.get('keyword')
 
-    print('GOT HERE', query)
-    print('SEARCH_JSON', search_json)
+    print('DATA THAT WAS SENT TO THE SERVER VIA AJAX')
+    print(lat, lng, radius, keyword)
 
-    if (len(search_json["results"]) == 0): # In case there are no results
-        return
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+    search_payload = {"key": key,
+                      "location":str(lat) + ',' + str(lng),
+                      "radius": radius,
+                      "keyword": keyword
+                      }
 
-    place_id = search_json["results"][0]["place_id"]
+    response = requests.get(url, params=search_payload)
+    print('RESPONSE INFO')
+    print(response.url)
+    result = response.json()
+
+    print('JSON', result)
+
+    return jsonify(result)
+
+    # if (len(search_json["results"]) == 0): # In case there are no results
+
+    # place_id = search_json["results"][0]["place_id"]
     #photo_id = search_json["results"][0]["photos"][0]["photo_reference"] #for photo json
                                                                             #instead of details
 
-    #photo_payload = {"key" : key, "maxwidth" : 500, "maxwidth" : 500, "photoreference" : photo_id}  #for photo id
-    #photo_request = requests.get(photos_url, params=photo_payload)                               #instead of details
-    details_payload = {"key": key, "placeid": place_id}
-    details_resp = requests.get(details_url, params=details_payload)
-    details_json = details_resp.json()          #^ was params
+ 
+    # details_payload = {"key": key, "placeid": place_id}
+    # details_resp = requests.get(details_url, params=details_payload)
+    # details_json = details_resp.json()          #^ was params
 
-    #photo_type = imagehdr.what("", photo_request.content)
-    #photo_name = "static/" + query + "." + photo_type
 
     #with open(photo_name), "wb") as photo:
     #photo.write(photo_request.content)
     #return '<img src='+ photo_name + '>'
 
-    url = details_json["result"]["url"]  # <---
-    return jsonify({'result': url})     # <---
+    # url = details_json["result"]["url"]  # <---
+    # return jsonify({'result': url})     # <---
     # instead of returning jsonify, redirect to /settings
 
 
 if __name__ == '__main__':
 
-    # error messages and reload
+  
     # our web app if we change the code.
     connect_to_db(app)
     app.debug = True

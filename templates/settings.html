@@ -140,10 +140,13 @@ $("#search").click(function() { // click event for search button
     let lng = map.getCenter().lng();
 
     let data = {
-        location: {lat, lng},
-        radius: 50,
+        latitude: lat, 
+        longitude: lng,
+        radius: 8000, // in meters
         keyword: term
     };
+
+    console.log(data);
 
     $.get('/sendRequest', data, processData);
 
@@ -162,47 +165,47 @@ function processData(data) {       {# this is where the json will add  #}
     //              "&keyword=" + term
   
 
-{#
+
 </script>
 
+    {#
 
-<!-- <div style="float: left; width: 400;">
-    <form name="frm_map" id="frm_map">
-       <table>
-            <tr>
-                <th>Address</th>
-                <td>
-                    <input type="text" name="address" id="address" value="Santa Monica, California">
-                </td>
-            </tr>
-            <tr>
-                <th>Radius</th>
-                <td>
-                    <input type="text" name="radius" id="radius" value="5" placeholder="In KM">
-                </td>
-            </tr>
-            <tr>
-                <th>Types</th>
-                <td>
-                    <div id="type_holder" style="height: 200px; overflow-y: scroll;">
-                        Dynamic Content    
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <input type="button" value="Show" id="submit" onclick="renderMap();"> 
-                    {# fixed #}
+    <!-- <div style="float: left; width: 400;">
+        <form name="frm_map" id="frm_map">
+           <table>
+                <tr>
+                    <th>Address</th>
+                    <td>
+                        <input type="text" name="address" id="address" value="Santa Monica, California">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Radius</th>
+                    <td>
+                        <input type="text" name="radius" id="radius" value="5" placeholder="In KM">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Types</th>
+                    <td>
+                        <div id="type_holder" style="height: 200px; overflow-y: scroll;">
+                            Dynamic Content    
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="button" value="Show" id="submit" onclick="renderMap();"> 
+                        {# fixed #}
 
-                    {# <input type="reset" value="Reset"> #}
-                </td>
-            </tr>
-        </table>
-    </form>
-</div> -->
-
-#}
+                        {# <input type="reset" value="Reset"> #}
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div> -->
+    #}
 
 </div>  <!-- container end -->
         
