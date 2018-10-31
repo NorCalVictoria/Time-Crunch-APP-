@@ -198,8 +198,8 @@ search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 # @app.route('/settings', methods=['POST'])
 def results(query):
     search_payload = {"key": key, "query": query}
-    search_req = requests.get(search_url, params=search_payload)
-
+    search_req = requests.get(search_url, json=search_payload)
+                                            #^ was params
     search_json = search_req.json()
 
     print('GOT HERE', query)
@@ -215,8 +215,8 @@ def results(query):
     #photo_payload = {"key" : key, "maxwidth" : 500, "maxwidth" : 500, "photoreference" : photo_id}  #for photo id
     #photo_request = requests.get(photos_url, params=photo_payload)                               #instead of details
     details_payload = {"key": key, "placeid": place_id}
-    details_resp = requests.get(details_url, params=details_payload)
-    details_json = details_resp.json()
+    details_resp = requests.get(details_url, json=details_payload)
+    details_json = details_resp.json()          #^ was params
 
     #photo_type = imagehdr.what("", photo_request.content)
     #photo_name = "static/" + query + "." + photo_type
