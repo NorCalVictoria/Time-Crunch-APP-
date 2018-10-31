@@ -1,0 +1,14 @@
+
+#details_url = "https://maps.googleapis.com/maps/api/place/details/json"
+#https://maps.googleapis.com/maps/api/place/photo?parameters # for place photo 
+                                                            #instead of details
+
+                                                               #photo_payload = {"key" : key, "maxwidth" : 500, "maxwidth" : 500, "photoreference" : photo_id}  #for photo id
+    #photo_request = requests.get(photos_url, params=photo_payload)                               #instead of details
+
+
+
+
+    
+    #photo_type = imagehdr.what("", photo_request.content)
+    #photo_name = "static/" + query + "." + photo_type

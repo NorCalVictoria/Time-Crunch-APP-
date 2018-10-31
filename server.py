@@ -211,7 +211,7 @@ def results():
     print(response.url)
     result = response.json()
 
-    print('JSON', result)
+    print('JSON', result) # this will log to terminal window
 
     return jsonify(result)
 
