@@ -211,17 +211,17 @@ def results():
     print(response.url)
     result = response.json()
 
-    print('JSON', result) # this will log to terminal window
+    print('JSON', result)# this will log to terminal window
 
     return jsonify(result)
 
     # if (len(search_json["results"]) == 0): # In case there are no results
 
     # place_id = search_json["results"][0]["place_id"]
-    #photo_id = search_json["results"][0]["photos"][0]["photo_reference"] #for photo json
+    # photo_id = search_json["results"][0]["photos"][0]["photo_reference"] #for photo json
                                                                             #instead of details
 
- 
+
     # details_payload = {"key": key, "placeid": place_id}
     # details_resp = requests.get(details_url, params=details_payload)
     # details_json = details_resp.json()          #^ was params
@@ -238,7 +238,7 @@ def results():
 
 if __name__ == '__main__':
 
-  
+
     # our web app if we change the code.
     connect_to_db(app)
     app.debug = True

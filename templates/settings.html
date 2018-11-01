@@ -50,14 +50,14 @@
 
  {# _________________Logic to show inital map with geolocation _________________#}
     // Initialize the map
-    function renderMap()
+    function renderMap() // initialize the map
     {
         // autocomplete = new google.maps.places.Autocomplete((document.getElementById('address')), {
         //     types: ['(regions)'],
         //    // componentRestrictions: countryRestrict
         // });
         map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 12
+            zoom: 12 
         });
 
         infoWindow = new google.maps.InfoWindow;
@@ -68,7 +68,7 @@
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
-
+ 
             let geocoder = new google.maps.Geocoder;
 
                 geocoder.geocode({'location':pos}, function(results,status){
@@ -153,7 +153,7 @@ $("#search").click(function() { // click event for search button
 });
    
 
-function processData(data) {       {# this is where the json will add  #}
+function processData(data,'jsonp') {                                         {# this is where the json will add  #}
     console.log(data);  // logs json results to the Inspector console (browser)
 
     // Eventually, we should add markers to the map.    
