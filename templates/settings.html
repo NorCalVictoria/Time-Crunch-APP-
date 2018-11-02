@@ -48,14 +48,11 @@
     let selectedTypes = [];
 
 
- {# _________________Logic to show inital map with geolocation _________________#}
-    // Initialize the map
+
+
+
     function renderMap() // initialize the map
     {
-        // autocomplete = new google.maps.places.Autocomplete((document.getElementById('address')), {
-        //     types: ['(regions)'],
-        //    // componentRestrictions: countryRestrict
-        // });
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 12 
         });
@@ -86,7 +83,7 @@
 
 
              infoWindow.setPosition(pos); 
-            infoWindow.setContent('YOU ARE HERE'); {#<!--can i add current user name ? #}
+            infoWindow.setContent('YOU ARE HERE'); 
             infoWindow.open(map);
             map.setCenter(pos); 
           }, function() {
@@ -114,8 +111,6 @@
 
 {#
 
-<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
-    <script src="{{ url_for('static', filename='script.js') }}"></script> -->
 #}
   
     <input type="text" id="query" placeholder="Search for hobby...">     {#  search box for user  #}
@@ -124,6 +119,18 @@
     {# <p><a href="" id="url" target="_blank">Results!</a></p>  #}
      <div id="image"></div>   <!-- for photo -->
 {#------------------alternate script--------------------------#}
+
+
+
+
+
+
+<!---------------------------------- add Map Markers--------------------------->
+
+
+
+
+
 
 
 
@@ -148,24 +155,70 @@ $("#search").click(function() { // click event for search button
 
     console.log(data);
 
-    $.get('/sendRequest', data, processData);
+    $.get('/sendRequest', data, showSearch);
 
 });
-   
-
-function processData(data,'jsonp') {                                         {# this is where the json will add  #}
-    console.log(data);  // logs json results to the Inspector console (browser)
-
-    // Eventually, we should add markers to the map.    
-}
-    // This URL is where you server should send its request.
-    // let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
-    // let urlStr = url + 'key=' + key + 
-    //              '&location=' + lat + ',' + lng + 
-    //              "&radius=50" + 
-    //              "&keyword=" + term
   
 
+
+function showSearch(data) {
+    let infoWind = new google.maps.InfoWindow;
+    Array.prototype.forEach.call(data.results, function(data){
+        console.log(data);
+        let content = document.createElement('div');
+        let strong = document.createElement('strong');
+        
+        strong.textContent = data.name;
+        content.appendChild(strong);
+
+        let img = document.createElement('img');
+        // img.src = 'img/Leopard.jpg';
+        img.style.width = '100px';
+        content.appendChild(img);
+
+        let marker = new google.maps.Marker({
+          position: new google.maps.LatLng(data.lat, data.lng),
+          map: map
+        });
+
+        marker.addListener('mouseover', function(){
+            infoWind.setContent(content);
+            infoWind.open(map, marker);
+        })
+    })
+}
+
+// google.maps.event.addListener(marker, 'click', function() {
+//     if (typeof infowindow != 'undefined') infowindow.close(); //one window only
+//     infowindow = new google.maps.InfoWindow({
+//     content: name
+//     });
+//     infowindow.open(map,marker);
+//     });
+
+
+google.maps.event.addDomListener(window, 'load', renderMap);//on search click
+
+
+
+
+
+
+
+
+
+//37.4220° N, 122.0841° W   //Google HQ
+
+
+
+
+
+
+
+function processData(data) {           
+    console.log(data);  // logs json results to the Inspector console (browser)
+
+}
 
 </script>
 
