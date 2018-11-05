@@ -11,46 +11,28 @@
     
     <h1 class="page-header">Welcome, {{ name }}</h1>
 
+{#  search box for user  #}
+<input type="text" id="query" placeholder="Search for hobby...">  
+<button id="search">Search</button>
 {#------------------------- MAP BELOW ------------------------------#}
 
 
+<div style="float: right;">
+    <div id="map" style="width:900px; height:600px;"></div>
+</div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDE5BClvl-Ttz9SnoNxuEqgzkBeujoUGjI&libraries=places&callback=renderMap  {# 404 error maybe ??? #}
- " async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDE5BClvl-Ttz9SnoNxuEqgzkBeujoUGjI&libraries=places&callback=renderMap" async defer></script>
 
 <script>
-    
-    // Makes checkboxes for each hobby
-{#   
-    // $(document).ready(function(){
-    //     //var searchReq =$.get("/sendRequest/" + $("#query").val());  <---
-    //     let types = ['foodie','museums','landmark','dancing','escape_rooms','wine bars','dogs','scenic','historic','kids','shopping'];
-    //     let html = '';
-
-    //     $.each(types, function( index, value ) {
-    //         let name = value.replace(/_/g, " ");
-    //         html += '<div><label><input type="checkbox" class="types" value="'+ value +'" />'+ capitalizeFirstLetter(name) +'</label></div>';
-    //     });
-
-    //     $('#type_holder').html(html);
-    // });
-
-    // // Helper function to capitalize first letter of a string
-    // function capitalizeFirstLetter(string) {
-    //     return string.charAt(0).toUpperCase() + string.slice(1);
-    // }
-#}
     // Variables for Google Map
     let map;
     let infowindow;
+    let markers = [];
     let autocomplete;
     let countryRestrict = {'country': 'in'};
     let selectedTypes = [];
 
-
-
-
-
+ //----------------------------------Load Google Map--------------------------->
     function renderMap() // initialize the map
     {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -103,44 +85,16 @@
       }
     }
 
+    // Render map when page loads.
+    google.maps.event.addDomListener(window, 'load', renderMap);
+
     </script>
 
-
-
- {#--------------------------alternate script ----------------#}
-
-{#
-
-#}
-  
-    <input type="text" id="query" placeholder="Search for hobby...">     {#  search box for user  #}
-    <button id="search">Search</button>
-
-    {# <p><a href="" id="url" target="_blank">Results!</a></p>  #}
-     <div id="image"></div>   <!-- for photo -->
-{#------------------alternate script--------------------------#}
-
-
-
-
-
-
 <!---------------------------------- add Map Markers--------------------------->
-
-
-
-
-
-
-
-
-<div style="float: right;">
-    <div id="map" style="width:900px; height:600px;"></div>
-</div>
-
 <script type="text/javascript">
 
-$("#search").click(function() { // click event for search button
+ // Click event listener for search button
+$("#search").click(function() {
     let term = $("#query").val();
     // query the google places API using our search term
     let lat = map.getCenter().lat();
@@ -155,6 +109,13 @@ $("#search").click(function() { // click event for search button
 
     console.log(data);
 
+    // Deletes any previous markers
+    for (let marker of markers) {
+        marker.setMap(null);
+    }
+    markers = [];
+
+    // Get Google Places info via the server using AJAX.
     $.get('/sendRequest', data, showSearch);
 
 });
@@ -162,29 +123,32 @@ $("#search").click(function() { // click event for search button
 
 
 function showSearch(data) {
-    let infoWind = new google.maps.InfoWindow;
     Array.prototype.forEach.call(data.results, function(data){
         console.log(data);
-        let content = document.createElement('div');
-        let strong = document.createElement('strong');
+        // let content = document.createElement('div');
+        // let strong = document.createElement('strong');
         
-        strong.textContent = data.name;
-        content.appendChild(strong);
+        // strong.textContent = data.name;
+        // content.appendChild(strong);
 
-        let img = document.createElement('img');
-        // img.src = 'img/Leopard.jpg';
-        img.style.width = '100px';
-        content.appendChild(img);
+        // let img = document.createElement('img');
+        // // img.src = 'img/Leopard.jpg';
+        // img.style.width = '100px';
+        // content.appendChild(img);
 
         let marker = new google.maps.Marker({
-          position: new google.maps.LatLng(data.lat, data.lng),
-          map: map
+          position: new google.maps.LatLng(data.geometry.location.lat,
+                                           data.geometry.location.lng),
+          map: map,
+          title: data.name, // hover text
         });
 
-        marker.addListener('mouseover', function(){
-            infoWind.setContent(content);
-            infoWind.open(map, marker);
-        })
+        markers.push(marker);
+
+        // marker.addListener('mouseover', function(){
+        //     infoWind.setContent(content);
+        //     infoWind.open(map, marker);
+        // })
     })
 }
 
@@ -197,32 +161,18 @@ function showSearch(data) {
 //     });
 
 
-google.maps.event.addDomListener(window, 'load', renderMap);//on search click
-
-
-
-
-
-
-
-
-
-//37.4220° N, 122.0841° W   //Google HQ
-
-
-
-
-
-
-
-function processData(data) {           
-    console.log(data);  // logs json results to the Inspector console (browser)
-
-}
-
 </script>
+ 
 
-   
+</div>  <!-- container end -->
+        
+{% endblock content %}
+
+{% include 'flashed.html' %}
+
+
+
+<!----------------------------------Drop down script--------------------------->
 
     <!-- <div style="float: left; width: 400;">
         <form name="frm_map" id="frm_map">
@@ -259,15 +209,29 @@ function processData(data) {
             </table>
         </form>
     </div> -->
- 
 
-</div>  <!-- container end -->
-        
-{% endblock content %}
+<!----------------------------------Checkboxes script--------------------------->
 
-{% include 'flashed.html' %}
+<script type="text/javascript">
+    
+    // Makes checkboxes for each hobby
+{#   
+    // $(document).ready(function(){
+    //     //var searchReq =$.get("/sendRequest/" + $("#query").val());  <---
+    //     let types = ['foodie','museums','landmark','dancing','escape_rooms','wine bars','dogs','scenic','historic','kids','shopping'];
+    //     let html = '';
 
+    //     $.each(types, function( index, value ) {
+    //         let name = value.replace(/_/g, " ");
+    //         html += '<div><label><input type="checkbox" class="types" value="'+ value +'" />'+ capitalizeFirstLetter(name) +'</label></div>';
+    //     });
 
-{#
-<!-- api k AIzaSyDE5BClvl-Ttz9SnoNxuEqgzkBeujoUGjI -->
+    //     $('#type_holder').html(html);
+    // });
+
+    // // Helper function to capitalize first letter of a string
+    // function capitalizeFirstLetter(string) {
+    //     return string.charAt(0).toUpperCase() + string.slice(1);
+    // }
 #}
+</script>
