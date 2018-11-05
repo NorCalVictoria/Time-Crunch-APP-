@@ -26,11 +26,12 @@
 <script>
     // Variables for Google Map
     let map;
-    let infowindow;
     let markers = [];
+    let markerWindow;
     let autocomplete;
     let countryRestrict = {'country': 'in'};
     let selectedTypes = [];
+
 
  //----------------------------------Load Google Map--------------------------->
     function renderMap() // initialize the map
@@ -39,7 +40,8 @@
             zoom: 12 
         });
 
-        infoWindow = new google.maps.InfoWindow;
+        let youAreHere = new google.maps.InfoWindow;
+        let markerWindow = new google.maps.InfoWindow({width: 150});
 
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -64,25 +66,80 @@
                 })
 
 
-             infoWindow.setPosition(pos); 
-            infoWindow.setContent('YOU ARE HERE'); 
-            infoWindow.open(map);
+             youAreHere.setPosition(pos); 
+            youAreHere.setContent('YOU ARE HERE'); 
+            youAreHere.open(map);
             map.setCenter(pos); 
           }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
+            handleLocationError(true, youAreHere, map.getCenter());
           });
         } else {
           // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
+          handleLocationError(false, youAreHere, map.getCenter());
         }
 
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
+      function handleLocationError(browserHasGeolocation, youAreHere, pos) {
+        youAreHere.setPosition(pos);
+        youAreHere.setContent(browserHasGeolocation ?
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
+        youAreHere.open(map);
       }
+
+
+       // Click event listener for search button
+        $("#search").click(function() {
+            let term = $("#query").val();
+            // query the google places API using our search term
+            let lat = map.getCenter().lat();
+            let lng = map.getCenter().lng();
+
+            let data = {
+                latitude: lat, 
+                longitude: lng,
+                radius: 8000, // in meters
+                keyword: term
+            };
+
+            console.log(data);
+
+            // Deletes any previous markers
+            for (let marker of markers) {
+                marker.setMap(null);
+            }
+            markers = [];
+
+            // Get Google Places info via the server using AJAX.
+            $.get('/sendRequest', data, showSearch);
+
+        });
+  
+
+        function showSearch(data) {
+            Array.prototype.forEach.call(data.results, function(data){
+                console.log(data);
+
+                let marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(data.geometry.location.lat,
+                                                   data.geometry.location.lng),
+                  map: map,
+                  title: data.name, // hover text
+                  icon: data.icon
+                });
+
+                markers.push(marker);
+
+                google.maps.event.addListener(marker, 'click', function(){
+                    markerWindow.close();
+                    let content = `
+                        <h1>${data.name}<h1>
+                    `;
+                    markerWindow.setContent(content);
+                    markerWindow.open(map, marker);
+                })
+            })
+        }
+
     }
 
     // Render map when page loads.
@@ -92,75 +149,6 @@
 
 <!---------------------------------- add Map Markers--------------------------->
 <script type="text/javascript">
-
- // Click event listener for search button
-$("#search").click(function() {
-    let term = $("#query").val();
-    // query the google places API using our search term
-    let lat = map.getCenter().lat();
-    let lng = map.getCenter().lng();
-
-    let data = {
-        latitude: lat, 
-        longitude: lng,
-        radius: 8000, // in meters
-        keyword: term
-    };
-
-    console.log(data);
-
-    // Deletes any previous markers
-    for (let marker of markers) {
-        marker.setMap(null);
-    }
-    markers = [];
-
-    // Get Google Places info via the server using AJAX.
-    $.get('/sendRequest', data, showSearch);
-
-});
-  
-
-
-function showSearch(data) {
-    Array.prototype.forEach.call(data.results, function(data){
-        console.log(data);
-        // let content = document.createElement('div');
-        // let strong = document.createElement('strong');
-        
-        // strong.textContent = data.name;
-        // content.appendChild(strong);
-
-        // let img = document.createElement('img');
-        // // img.src = 'img/Leopard.jpg';
-        // img.style.width = '100px';
-        // content.appendChild(img);
-
-        let marker = new google.maps.Marker({
-          position: new google.maps.LatLng(data.geometry.location.lat,
-                                           data.geometry.location.lng),
-          map: map,
-          title: data.name, // hover text
-        });
-
-        markers.push(marker);
-
-        // marker.addListener('mouseover', function(){
-        //     infoWind.setContent(content);
-        //     infoWind.open(map, marker);
-        // })
-    })
-}
-
-// google.maps.event.addListener(marker, 'click', function() {
-//     if (typeof infowindow != 'undefined') infowindow.close(); //one window only
-//     infowindow = new google.maps.InfoWindow({
-//     content: name
-//     });
-//     infowindow.open(map,marker);
-//     });
-
-
 </script>
  
 
