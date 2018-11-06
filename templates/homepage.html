@@ -1,7 +1,7 @@
 {% extends "bootstrap/base.html" %}
 
 {% block title %}
-Home
+  Home
 {% endblock %}
 
  
@@ -19,11 +19,9 @@ Home
 
 
 {% block content %}
-<br>
-<br>
-<br>
-<br>
-    <div class="container">
+{{ super () }}
+
+    <!-- <div class="container">
 
       <div class="startTemp">
         <br>
@@ -32,7 +30,24 @@ Home
         <p class="lead">Customize your fun.<br>Everywhere.</p>
       </div>
 
-    </div><!-- /.container -->
+    </div>
+     -->
+
+        <div class="jumbotron jumbotron-fluid bg-info text-white" style="background: #aaa;">
+            
+            <div class="container">
+              <h1> Make use of your free time.</h1>
+              <h6 class="font-weight-bold lead" > Customize your fun .<br>Anywhere ...</h6>
+            </div>
+        </div>
+
+
+    <div class="container">
+      <img src="street view nite" class="img-fluid" alt="Responsive image">   
+      <!--background image here -->
+    </div>
+
+
 {% endblock %}
 
 {% include 'flashed.html' %}

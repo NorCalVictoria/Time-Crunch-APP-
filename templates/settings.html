@@ -8,7 +8,7 @@
 {% block content %}
 
 <div id="settings-content" class="container-fluid">
-    <h1 class="page-header">Welcome, {{ name }}</h1>
+    <h1 class="page-header">Welcome, {{ name }} !</h1>
     
     <div class="row">
         <div class="col-md-6">
@@ -19,13 +19,15 @@
             {#  search box for user  #}
             <input type="text" id="query" placeholder="Search for hobby...">  
             <button id="search">Search</button>
+            <br>
+            <br>
 
             <div id="type_holder"></div> {# needs to be set to width of 300 }
         </div>
         
 
     </div>
-
+    
 
 {#------------------------- MAP BELOW ------------------------------#}
 
@@ -180,9 +182,9 @@
     //Makes checkboxes for each hobby
   
     $(document).ready(function(){
-        console.log("make checkboxes");
+        console.log("make radio buttons");
         //var searchReq =$.get("/sendRequest/" + $("#query").val());  <---
-        let types = ['foodie','museums','landmark','dancing','escape rooms','wine bars','dogs','scenic','historic','kids','shopping'];
+        let types = ['  foodie','  museums','  landmark','  dancing','  escape rooms','  wine bars','  dogs','  scenic','  historic','  kids','  shopping'];
         let html = '';
 
         $.each(types, function( index, value ) {
@@ -207,12 +209,50 @@
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-</script>
+</script> 
+        <div class="container">
+              <div style="height: 200px; width:200; background-color: #aaa;">
+              <div class="text-center bg-secondary">
+                <img src="link to first result photoreference" class="image-responsive rounded background border-info" alt="..."><!-- ADD PLACE PHOTO URL -->
+              </div>
 
+            </div>
+              <div style="height: 200px; width:200; background-color: #aaa;">
+              <div class="text-center bg-secondary">
+                <img src="link to second result photoreference" class="image-responsive rounded border border-info  alt="..."><!-- ADD PLACE 2 PHOTO URL -->
+              </div>
 
-</div>
+            </div>
+              <div style="height: 200px; width:200; background-color: #aaa;">
+              <div class="text-center bg-secondary">
+                <img src="link to third result photoreference" class="image-responsive rounded border border-info"  alt="..."><!-- ADD PLACE 3 PHOTO URL -->
+              </div>
+             </div>
+            </div>
+          
+        </div><!--container-->
         
+  
+
 {% endblock content %}
 
 {% include 'flashed.html' %}
+
+
+
+<!-- <div style="height: 100px; background-color: rgba(255,0,0,0.1);">
+  <div class="h-25 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 25%</div>
+  <div class="h-50 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 50%</div>
+  <div class="h-75 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 75%</div>
+  <div class="h-100 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 100%</div>
+</div> -->
+
+
+<!-- <div class="media">
+ <img class="mr-3" src="..." alt="Generic placeholder image">
+  <div class="media-body">
+    <h5 class="mt-0">Media heading</h5>
+    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+  </div>
+</div> -->
 
