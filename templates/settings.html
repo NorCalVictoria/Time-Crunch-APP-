@@ -14,6 +14,8 @@
 {#  search box for user  #}
 <input type="text" id="query" placeholder="Search for hobby...">  
 <button id="search">Search</button>
+
+<div id="type_holder"></div>
 {#------------------------- MAP BELOW ------------------------------#}
 
 
@@ -119,21 +121,37 @@
             Array.prototype.forEach.call(data.results, function(data){
                 console.log(data);
 
+                let icon = {
+                    url: data.icon,
+                    scaledSize: new google.maps.Size(30, 30),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(15, 15)
+                };
+
                 let marker = new google.maps.Marker({
                   position: new google.maps.LatLng(data.geometry.location.lat,
                                                    data.geometry.location.lng),
                   map: map,
                   title: data.name, // hover text
-                  icon: data.icon
+                  icon: icon
                 });
 
                 markers.push(marker);
 
                 google.maps.event.addListener(marker, 'click', function(){
                     markerWindow.close();
+
+                    let img = `<img src="https://vignette.wikia.nocookie.net/max-steel-reboot/images/7/72/No_Image_Available.gif/revision/latest?cb=20130902173013" style="max-width:150px;">`
+                    
+                    if (data.photos) {
+                        img = `<img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photoreference=${data.photos[0].photo_reference}&key=AIzaSyDE5BClvl-Ttz9SnoNxuEqgzkBeujoUGjI">`
+                    }
+
                     let content = `
-                        <h1>${data.name}<h1>
-                    `;
+                        <h3>${data.name}<h3>
+                        <p>${data.vicinity}</p>
+                       ${img}`;
+
                     markerWindow.setContent(content);
                     markerWindow.open(map, marker);
                 })
@@ -153,73 +171,47 @@
  
 
 </div>  <!-- container end -->
-        
-{% endblock content %}
-
-{% include 'flashed.html' %}
 
 
 
-<!----------------------------------Drop down script--------------------------->
-
-    <!-- <div style="float: left; width: 400;">
-        <form name="frm_map" id="frm_map">
-           <table>
-                <tr>
-                    <th>Address</th>
-                    <td>
-                        <input type="text" name="address" id="address" value="Santa Monica, California">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Radius</th>
-                    <td>
-                        <input type="text" name="radius" id="radius" value="5" placeholder="In KM">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Types</th>
-                    <td>
-                        <div id="type_holder" style="height: 200px; overflow-y: scroll;">
-                            Dynamic Content    
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type="button" value="Show" id="submit" onclick="renderMap();"> 
-                        {# fixed #}
-
-                        {# <input type="reset" value="Reset"> #}
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div> -->
 
 <!----------------------------------Checkboxes script--------------------------->
 
 <script type="text/javascript">
     
-    // Makes checkboxes for each hobby
-{#   
-    // $(document).ready(function(){
-    //     //var searchReq =$.get("/sendRequest/" + $("#query").val());  <---
-    //     let types = ['foodie','museums','landmark','dancing','escape_rooms','wine bars','dogs','scenic','historic','kids','shopping'];
-    //     let html = '';
+    //Makes checkboxes for each hobby
+  
+    $(document).ready(function(){
+        console.log("make checkboxes");
+        //var searchReq =$.get("/sendRequest/" + $("#query").val());  <---
+        let types = ['foodie','museums','landmark','dancing','escape rooms','wine bars','dogs','scenic','historic','kids','shopping'];
+        let html = '';
 
-    //     $.each(types, function( index, value ) {
-    //         let name = value.replace(/_/g, " ");
-    //         html += '<div><label><input type="checkbox" class="types" value="'+ value +'" />'+ capitalizeFirstLetter(name) +'</label></div>';
-    //     });
+        $.each(types, function( index, value ) {
+            let name = value.replace(/_/g, " ");
+            html += '<div><label><input name="term" type="radio" class="types" value="'+ value +'" />'+ capitalizeFirstLetter(name) +'</label></div>';
+        });
 
-    //     $('#type_holder').html(html);
-    // });
+        $('#type_holder').html(html);
 
-    // // Helper function to capitalize first letter of a string
-    // function capitalizeFirstLetter(string) {
-    //     return string.charAt(0).toUpperCase() + string.slice(1);
-    // }
-#}
+
+        $('#type_holder').on('click', function(evt) {
+            // if the target of the event is an input element, then we want to get its value
+            if (evt.target.tagName == 'INPUT') {
+                let radio_value = evt.target.value;
+                $('#query').val(radio_value);
+            }
+        })
+    });
+
+    // Helper function to capitalize first letter of a string
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
 </script>
+        
+{% endblock content %}
+
+{% include 'flashed.html' %}
+
