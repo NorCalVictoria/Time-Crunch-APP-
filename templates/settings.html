@@ -79,7 +79,7 @@
 
 
              youAreHere.setPosition(pos); 
-            youAreHere.setContent('YOU ARE HERE'); 
+            youAreHere.setContent('YOU '); 
             youAreHere.open(map);
             map.setCenter(pos); 
           }, function() {
@@ -184,7 +184,7 @@
     $(document).ready(function(){
         console.log("make radio buttons");
         //var searchReq =$.get("/sendRequest/" + $("#query").val());  <---
-        let types = ['  foodie','  museums','  landmark','  dancing','  escape rooms','  wine bars','  dogs','  scenic','  historic','  kids','  shopping'];
+        let types = ['  food','  museums','  landmark','  dancing','  escape rooms','  wine bars','  dogs','  scenic','  historic','  kids','  shopping'];
         let html = '';
 
         $.each(types, function( index, value ) {
@@ -209,6 +209,12 @@
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+</script>
+
+
+
+
+
 </script> 
         <div class="container">
               <div style="height: 200px; width:200; background-color: #aaa;">
@@ -231,8 +237,7 @@
             </div>
           
         </div><!--container-->
-        
-  
+
 
 {% endblock content %}
 
@@ -240,19 +245,5 @@
 
 
 
-<!-- <div style="height: 100px; background-color: rgba(255,0,0,0.1);">
-  <div class="h-25 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 25%</div>
-  <div class="h-50 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 50%</div>
-  <div class="h-75 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 75%</div>
-  <div class="h-100 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 100%</div>
-</div> -->
 
-
-<!-- <div class="media">
- <img class="mr-3" src="..." alt="Generic placeholder image">
-  <div class="media-body">
-    <h5 class="mt-0">Media heading</h5>
-    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-  </div>
-</div> -->
 
