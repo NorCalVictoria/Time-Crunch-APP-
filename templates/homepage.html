@@ -8,7 +8,8 @@
 {#
 {% block styles %}
 <link rel="stylesheet" href="{{url_for('.static', filename='starter-template.css')}}">
-{% endblock %}
+<link rel="stylesheet" type="text/css" href="/static/styles.css">
+
 #}
 
 {{super()}}
@@ -32,8 +33,7 @@
 
     </div>
      -->
-
-        <div class="jumbotron jumbotron-fluid bg-info text-white" style="background: #aaa;">
+        <div class="jumbotron jumbotron-fluid bg-info text-white">
             
             <div class="container">
               <h1> Make use of your free time.</h1>
@@ -42,10 +42,12 @@
         </div>
 
 
-    <div class="container">
-      <img src="street view nite" class="img-fluid" alt="Responsive image">   
-      <!--background image here -->
-    </div>
+
+    <div  class="bg"></div>
+ 
+      <img src="/static/images/street view nite 2.jpg" class="img-fluid" alt="Responsive image"></div>  
+
+
 
 
 {% endblock %}

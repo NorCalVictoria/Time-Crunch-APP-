@@ -1,3 +1,14 @@
-#settings-content {
+/*#settings-content {
     margin-top: 50px;
 
+
+
+*/
+
+
+.bg {
+    background-image: url("/static/images/street view nite 2.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+}
