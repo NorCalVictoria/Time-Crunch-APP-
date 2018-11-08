@@ -1,14 +1,28 @@
 
-#details_url = "https://maps.googleapis.com/maps/api/place/details/json"
-#https://maps.googleapis.com/maps/api/place/photo?parameters # for place photo 
-                                                            #instead of details
-
-                                                               #photo_payload = {"key" : key, "maxwidth" : 500, "maxwidth" : 500, "photoreference" : photo_id}  #for photo id
-    #photo_request = requests.get(photos_url, params=photo_payload)                               #instead of details
-
-
+<!-- <div style="height: 100px; background-color: rgba(255,0,0,0.1);">
+  <div class="h-25 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 25%</div>
+  <div class="h-50 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 50%</div>
+  <div class="h-75 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 75%</div>
+  <div class="h-100 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 100%</div>
+</div> -->
 
 
-    
-    #photo_type = imagehdr.what("", photo_request.content)
-    #photo_name = "static/" + query + "." + photo_type
+<!-- <div class="media">
+ <img class="mr-3" src="..." alt="Generic placeholder image">
+  <div class="media-body">
+    <h5 class="mt-0">Media heading</h5>
+    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
+     
+<!-- 
+/*
+  <div id="test" onclick="location.href='http://www.google.com';" style="cursor:pointer;"></div> <!-- use the to make image clickable -->*/ -->

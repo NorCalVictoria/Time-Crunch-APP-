@@ -241,6 +241,6 @@ if __name__ == '__main__':
 
     # our web app if we change the code.
     connect_to_db(app)
-    app.debug = True
+    app.debug = False
     toolbar = DebugToolbarExtension(app)
     app.run(host="0.0.0.0")
